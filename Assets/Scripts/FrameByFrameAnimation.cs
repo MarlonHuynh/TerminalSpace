@@ -19,9 +19,7 @@ public class FrameByFrameAnimation : MonoBehaviour
     public Material playerStartMaterial;
 
     void Start()
-    { 
-        playerSpr.SetActive(false);
-        player.GetComponent<PlayerMovement>().movementEnabled = false;  
+    {  
 
         // Load all textures from the specified folder in Resources
         frames = Resources.LoadAll<Texture2D>(folderName); 

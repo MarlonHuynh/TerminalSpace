@@ -1,0 +1,478 @@
+Using pre-set license
+Built from '2022.3/release' branch; Version is '2022.3.20f1 (61c2feb0970d) revision 6406910'; Using compiler version '192829333'; Build Type 'Release'
+OS: 'Windows 10  (10.0.19045) 64bit Professional' Language: 'en' Physical Memory: 65480 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1, IsPro: 1
+
+COMMAND LINE ARGUMENTS:
+C:\Program Files\Unity\Hub\Editor\2022.3.20f1\Editor\Unity.exe
+-adb2
+-batchMode
+-noUpm
+-name
+AssetImportWorker4
+-projectPath
+C:/Users/Betty/TerminalSpaceGit
+-logFile
+Logs/AssetImportWorker4.log
+-srvPort
+61685
+Successfully changed project path to: C:/Users/Betty/TerminalSpaceGit
+C:/Users/Betty/TerminalSpaceGit
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gfx=262144"
+Player connection [6968] Host "[IP] 192.168.70.71 [Port] 0 [Flags] 2 [Guid] 2387786238 [EditorId] 2387786238 [Version] 1048832 [Id] WindowsEditor(7,T3610-J5KVR22) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined multi-casting on [225.0.0.222:54997]...
+
+Player connection [6968] Host "[IP] 192.168.70.71 [Port] 0 [Flags] 2 [Guid] 2387786238 [EditorId] 2387786238 [Version] 1048832 [Id] WindowsEditor(7,T3610-J5KVR22) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined alternative multi-casting on [225.0.0.222:34997]...
+
+[Physics::Module] Initialized MultithreadedJobDispatcher with 15 workers.
+Refreshing native plugins compatible for Editor in 23.71 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 2022.3.20f1 (61c2feb0970d)
+[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/2022.3.20f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path C:/Users/Betty/TerminalSpaceGit/Assets
+GfxDevice: creating device client; threaded=0; jobified=0
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce GTX 1080 (ID=0x1b80)
+    Vendor:   NVIDIA
+    VRAM:     8059 MB
+    Driver:   32.0.15.6636
+Initialize mono
+Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2022.3.20f1/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2022.3.20f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
+Mono config path = 'C:/Program Files/Unity/Hub/Editor/2022.3.20f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56400
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2022.3.20f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Registered in 0.028518 seconds.
+- Loaded All Assemblies, in  0.588 seconds
+Native extension for WindowsStandalone target not found
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.423 seconds
+Domain Reload Profiling: 1005ms
+	BeginReloadAssembly (194ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (0ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (1ms)
+	RebuildCommonClasses (53ms)
+	RebuildNativeTypeToScriptingClass (17ms)
+	initialDomainReloadingComplete (117ms)
+	LoadAllAssembliesAndSetupDomain (200ms)
+		LoadAssemblies (188ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (197ms)
+			TypeCache.Refresh (195ms)
+				TypeCache.ScanAssembly (177ms)
+			ScanForSourceGeneratedMonoScriptInfo (0ms)
+			ResolveRequiredComponents (1ms)
+	FinalizeReload (423ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (330ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (19ms)
+			SetLoadedEditorAssemblies (10ms)
+			RefreshPlugins (0ms)
+			BeforeProcessingInitializeOnLoad (3ms)
+			ProcessInitializeOnLoadAttributes (223ms)
+			ProcessInitializeOnLoadMethodAttributes (75ms)
+			AfterProcessingInitializeOnLoad (0ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (0ms)
+========================================================================
+Worker process is ready to serve import requests
+Begin MonoManager ReloadAssembly
+- Loaded All Assemblies, in  1.077 seconds
+Refreshing native plugins compatible for Editor in 9.95 ms, found 3 plugins.
+Native extension for WindowsStandalone target not found
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  1.176 seconds
+Domain Reload Profiling: 2240ms
+	BeginReloadAssembly (244ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (8ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (25ms)
+	RebuildCommonClasses (50ms)
+	RebuildNativeTypeToScriptingClass (16ms)
+	initialDomainReloadingComplete (80ms)
+	LoadAllAssembliesAndSetupDomain (673ms)
+		LoadAssemblies (562ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (266ms)
+			TypeCache.Refresh (219ms)
+				TypeCache.ScanAssembly (198ms)
+			ScanForSourceGeneratedMonoScriptInfo (32ms)
+			ResolveRequiredComponents (13ms)
+	FinalizeReload (1177ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (912ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (14ms)
+			SetLoadedEditorAssemblies (7ms)
+			RefreshPlugins (0ms)
+			BeforeProcessingInitializeOnLoad (149ms)
+			ProcessInitializeOnLoadAttributes (601ms)
+			ProcessInitializeOnLoadMethodAttributes (115ms)
+			AfterProcessingInitializeOnLoad (25ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (12ms)
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.08 seconds
+Refreshing native plugins compatible for Editor in 9.83 ms, found 3 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 4271 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 89 unused Assets / (2.1 MB). Loaded Objects now: 4729.
+Memory consumption went from 207.3 MB to 205.2 MB.
+Total: 5.027100 ms (FindLiveObjects: 0.390600 ms CreateObjectMapping: 0.202700 ms MarkObjects: 3.899800 ms  DeleteObjects: 0.532600 ms)
+
+AssetImportParameters requested are different than current active one (requested -> active):
+  custom:container-demuxer-ogg: 62fdf1f143b41e24485cea50d1cbac27 -> 
+  custom:video-decoder-ogg-theora: a1e56fd34408186e4bbccfd4996cb3dc -> 
+  custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
+  custom:CustomObjectIndexerAttribute: 0f5f72dab822025b0759b197a3119d15 -> 
+  custom:container-demuxer-webm: 4f35f7cbe854078d1ac9338744f61a02 -> 
+  custom:container-muxer-webm: aa71ff27fc2769a1b78a27578f13a17b -> 
+  custom:video-decoder-webm-vp8: 9c59270c3fd7afecdb556c50c9e8de78 -> 
+  custom:SearchIndexIgnoredProperties: e643bd26f0fe6173181afceb89e7c659 -> 
+  custom:scripting/monoscript/fileName/LightFader.cs: 338561c766ae37b4c3023447910e88e0 -> 
+  custom:AudioImporter_EditorPlatform: d09bf68614088b80899f8185d706f6e7 -> 
+  custom:video-encoder-webm-vp8: eb34c28f22e8b96e1ab97ce403110664 -> 
+  custom:audio-decoder-ogg-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+  custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
+========================================================================
+Received Import Request.
+  Time since last request: 214784.173158 seconds.
+  path: Assets/Models/CustomPrefabs/Materials/Item.mat
+  artifactKey: Guid(7a5b4bc0d4434834eb2aa7e30ec7ff64) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Models/CustomPrefabs/Materials/Item.mat using Guid(7a5b4bc0d4434834eb2aa7e30ec7ff64) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '876f5ba929bbccc48a3b2c07978216d2') in 0.415754 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 5
+========================================================================
+Received Import Request.
+  Time since last request: 2.697650 seconds.
+  path: Assets/Resources/StartAnim/play25.png
+  artifactKey: Guid(df67f67d339f75e43ba2ac44a3aa03d6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/StartAnim/play25.png using Guid(df67f67d339f75e43ba2ac44a3aa03d6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b35e54ba59c1695eaf73b80a16ef723e') in 0.119684 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000022 seconds.
+  path: Assets/Resources/StartAnim/play53.png
+  artifactKey: Guid(66537febd9c583646a34b6c994a9fd47) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/StartAnim/play53.png using Guid(66537febd9c583646a34b6c994a9fd47) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ae86d2e27f602d43bb6117e240f5cf95') in 0.040916 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000023 seconds.
+  path: Assets/Resources/StartAnim/play60.png
+  artifactKey: Guid(55cae40828fd9464fbf165d744c1637d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/StartAnim/play60.png using Guid(55cae40828fd9464fbf165d744c1637d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0fb35c213138dc67874e2a761e9c1703') in 0.033875 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000025 seconds.
+  path: Assets/Resources/StartAnim/play34.png
+  artifactKey: Guid(2b4c7415e6940de4abd6cfb40b67e5cf) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/StartAnim/play34.png using Guid(2b4c7415e6940de4abd6cfb40b67e5cf) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '889e164ce2a3d6d6ba3829a98215a970') in 0.039478 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000034 seconds.
+  path: Assets/Resources/StartAnim/play35.png
+  artifactKey: Guid(f01e9c8d959825942ac4fed7b26ccdb0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/StartAnim/play35.png using Guid(f01e9c8d959825942ac4fed7b26ccdb0) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a12827e4ca253ef74159e02064cf8229') in 0.040957 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000024 seconds.
+  path: Assets/Resources/StartAnim/play44.png
+  artifactKey: Guid(b1aaa8869f4608d4999d603240fff502) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/StartAnim/play44.png using Guid(b1aaa8869f4608d4999d603240fff502) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f6cfcf00b456e789cf863315c87d3c0c') in 0.030835 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000022 seconds.
+  path: Assets/Models/CustomPrefabs/SideWall.PNG
+  artifactKey: Guid(fb51ea82f2e49ad47b531bc83cb322e5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Models/CustomPrefabs/SideWall.PNG using Guid(fb51ea82f2e49ad47b531bc83cb322e5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2c0a7e5f66e18d6f9e44c5d176d6beb2') in 0.073353 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000024 seconds.
+  path: Assets/Resources/StartAnim/play42.png
+  artifactKey: Guid(7fc69622f39d4d3418240793446b7ba1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/StartAnim/play42.png using Guid(7fc69622f39d4d3418240793446b7ba1) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '286000d97b8f1618e8261a489da425b4') in 0.030637 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000025 seconds.
+  path: Assets/Resources/StartAnim/play31.png
+  artifactKey: Guid(38daa1c436ac93d46ac1021d7a19d698) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/StartAnim/play31.png using Guid(38daa1c436ac93d46ac1021d7a19d698) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b991321cfd61561c1daab0e11b377edd') in 0.030996 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000034 seconds.
+  path: Assets/Sprites/Spaceship tileset/Spaceship Tileset/tilesets/Spacestation_Inside_E.png
+  artifactKey: Guid(a83da541bcc16b749811f54ced1f15be) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/Spaceship tileset/Spaceship Tileset/tilesets/Spacestation_Inside_E.png using Guid(a83da541bcc16b749811f54ced1f15be) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '71a95e9257055fc1fbb7db35f5d40669') in 0.052967 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000022 seconds.
+  path: Assets/Resources/StartAnim/play37.png
+  artifactKey: Guid(43e588c5c67876440bab91e26114176c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/StartAnim/play37.png using Guid(43e588c5c67876440bab91e26114176c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd1f4369f0ec4129079b39fbe1831c585') in 0.030601 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000022 seconds.
+  path: Assets/Resources/StartAnim/play46.png
+  artifactKey: Guid(f33e5421ff04c8e4da559f7d54683cd5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/StartAnim/play46.png using Guid(f33e5421ff04c8e4da559f7d54683cd5) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f581664e5bde3105f66b9486dcba2f5c') in 0.031284 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000022 seconds.
+  path: Assets/Resources/StartAnim/play51.png
+  artifactKey: Guid(f06e3ba110d1f74479dbed6e92c696e4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/StartAnim/play51.png using Guid(f06e3ba110d1f74479dbed6e92c696e4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5a30ce4756a66f3052161de073ba1cc8') in 0.031067 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000024 seconds.
+  path: Assets/Sprites/Spaceship tileset/Spaceship Tileset/tilesets/Spacestation_Inside_C.png
+  artifactKey: Guid(5ac64e4216e279e409c28a08ed4d1499) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/Spaceship tileset/Spaceship Tileset/tilesets/Spacestation_Inside_C.png using Guid(5ac64e4216e279e409c28a08ed4d1499) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f20147a18d2781c43cc99edb82751364') in 0.464303 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 243
+========================================================================
+Received Import Request.
+  Time since last request: 0.000031 seconds.
+  path: Assets/TextMesh Pro/Resources/Fonts & Materials/VCR_OSD_MONO_1.asset
+  artifactKey: Guid(91aac80b8bea3334187652d0cc6d9466) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/TextMesh Pro/Resources/Fonts & Materials/VCR_OSD_MONO_1.asset using Guid(91aac80b8bea3334187652d0cc6d9466) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3a230dd58fde7885066b6792742a75cf') in 0.061445 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 7
+========================================================================
+Received Import Request.
+  Time since last request: 0.000034 seconds.
+  path: Assets/Models/CustomPrefabs/Wall.PNG
+  artifactKey: Guid(602fbb752f598e740bd154efcaa79f9d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Models/CustomPrefabs/Wall.PNG using Guid(602fbb752f598e740bd154efcaa79f9d) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '06d79f816357ad15b12a69265794d765') in 0.049032 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 29.876079 seconds.
+  path: Assets/Models/==Ship==.prefab
+  artifactKey: Guid(263ca495ec2aa1d41a43bb6247906e6b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Models/==Ship==.prefab using Guid(263ca495ec2aa1d41a43bb6247906e6b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd4309ecca02aada123dc717f2a787814') in 0.148007 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 354
+========================================================================
+Received Import Request.
+  Time since last request: 0.460712 seconds.
+  path: Assets/Models/CustomPrefabs/BlueStar.png
+  artifactKey: Guid(5b62db06cd9a3c442b78c7b73a9bc1ba) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Models/CustomPrefabs/BlueStar.png using Guid(5b62db06cd9a3c442b78c7b73a9bc1ba) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6499bc16fc2d2303e0981dc3adf0796a') in 0.048570 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000095 seconds.
+  path: Assets/Models/CustomPrefabs/Floor 1.PNG
+  artifactKey: Guid(6e489511a2ac41b44ab0df46689878bf) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Models/CustomPrefabs/Floor 1.PNG using Guid(6e489511a2ac41b44ab0df46689878bf) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0a4c5cc00351b19846600127f885995c') in 0.052941 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000030 seconds.
+  path: Assets/Models/CustomPrefabs/PlanetPrefab.prefab
+  artifactKey: Guid(20425b0976c9ba54baca2bd90e37234f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Models/CustomPrefabs/PlanetPrefab.prefab using Guid(20425b0976c9ba54baca2bd90e37234f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9ae4434fe32ababe279fa0055de39645') in 0.029434 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 37
+========================================================================
+Received Import Request.
+  Time since last request: 0.000028 seconds.
+  path: Assets/Models/CustomPrefabs/EarthTexture.png
+  artifactKey: Guid(e2449603ef84aa643a2f620cb3c248fe) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Models/CustomPrefabs/EarthTexture.png using Guid(e2449603ef84aa643a2f620cb3c248fe) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '11c65d9394e527234473e25de6de46a2') in 0.041425 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 11.169071 seconds.
+  path: Assets/Sprites/Spaceship tileset/Spaceship Tileset/characters/!$Spaceship_gate2.png
+  artifactKey: Guid(feffcabebeae7424e809ee1dc978854b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/Spaceship tileset/Spaceship Tileset/characters/!$Spaceship_gate2.png using Guid(feffcabebeae7424e809ee1dc978854b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'ff2cbc40c8202fb5817cee4edf0fc904') in 0.048117 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000025 seconds.
+  path: Assets/Resources/StartAnim/play12.png
+  artifactKey: Guid(b86aa55391b48ac4dbe4ffa7181253cb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/StartAnim/play12.png using Guid(b86aa55391b48ac4dbe4ffa7181253cb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '55be697bbecd91572ad88d5a52253b5b') in 0.035376 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000041 seconds.
+  path: Assets/Resources/StartAnim/play22.png
+  artifactKey: Guid(1d1ffd45706a3fd4d8faddbbc5c2a9ad) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/StartAnim/play22.png using Guid(1d1ffd45706a3fd4d8faddbbc5c2a9ad) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f79fa8f6cee1436f2b955ed0444284d0') in 0.034469 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000022 seconds.
+  path: Assets/Sprites/Spaceship tileset/Spaceship Tileset/characters/!$Spaceship_reactor_offline.png
+  artifactKey: Guid(e206f535c56e6c04cbd3e5a512e9b4ba) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/Spaceship tileset/Spaceship Tileset/characters/!$Spaceship_reactor_offline.png using Guid(e206f535c56e6c04cbd3e5a512e9b4ba) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'a363808eeff8b6ab437a6f208f3e824c') in 0.045466 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000023 seconds.
+  path: Assets/Sprites/Spaceship tileset/Spaceship Tileset/characters/!Spaceship_door.png
+  artifactKey: Guid(c0269ca40aeb0c04787d60214e1a2225) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/Spaceship tileset/Spaceship Tileset/characters/!Spaceship_door.png using Guid(c0269ca40aeb0c04787d60214e1a2225) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd718b99ab1b3ba6fad5fcfa7bab2cb22') in 0.048956 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000023 seconds.
+  path: Assets/Resources/StartAnim/play15.png
+  artifactKey: Guid(f0e83e5579246904393611b0eb1508e8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/StartAnim/play15.png using Guid(f0e83e5579246904393611b0eb1508e8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '87061c38488c4b029f018c760e2c8115') in 0.031617 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000024 seconds.
+  path: Assets/Sprites/Spaceship tileset/Spaceship Tileset/characters/!Spaceship_chest3.png
+  artifactKey: Guid(4f0bc7831f1f0144b9e88064ff3527c7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/Spaceship tileset/Spaceship Tileset/characters/!Spaceship_chest3.png using Guid(4f0bc7831f1f0144b9e88064ff3527c7) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b7beee8f987b3a663b67b5089828c763') in 0.041068 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000032 seconds.
+  path: Assets/Sprites/Spaceship tileset/Spaceship Tileset/characters/!$Spaceship_reactor_critical.png
+  artifactKey: Guid(37f6701f55f79c94488ee2857c1910b2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/Spaceship tileset/Spaceship Tileset/characters/!$Spaceship_reactor_critical.png using Guid(37f6701f55f79c94488ee2857c1910b2) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9c7cb643664b249f88a2a6887c39ca80') in 0.046049 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000024 seconds.
+  path: Assets/Sprites/Spaceship tileset/Spaceship Tileset/characters/!Spaceship_cpu_server.png
+  artifactKey: Guid(df2314d5a567f2340b5fcca990d3bbd8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/Spaceship tileset/Spaceship Tileset/characters/!Spaceship_cpu_server.png using Guid(df2314d5a567f2340b5fcca990d3bbd8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '24ad37825097249f29ebe54e2e8f2ecd') in 0.053402 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000024 seconds.
+  path: Assets/Sprites/Spaceship tileset/Spaceship Tileset/characters/!Spaceship_decoration.png
+  artifactKey: Guid(dad6568b133222e47a770060a695dbfa) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/Spaceship tileset/Spaceship Tileset/characters/!Spaceship_decoration.png using Guid(dad6568b133222e47a770060a695dbfa) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2aa26d8937c59bfc6ceb2fb75cedb713') in 0.044594 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000023 seconds.
+  path: Assets/Resources/StartAnim/play7.png
+  artifactKey: Guid(4cc1177004a5e1b4db661fd4ba30430a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/StartAnim/play7.png using Guid(4cc1177004a5e1b4db661fd4ba30430a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'de8869b1d966bef41b58630adcd07c01') in 0.032611 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000041 seconds.
+  path: Assets/Resources/StartAnim/play6.png
+  artifactKey: Guid(54eef52fede6bb347a4246ce4f6110f9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/StartAnim/play6.png using Guid(54eef52fede6bb347a4246ce4f6110f9) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '63c92a440057e153c937568d608ed6cd') in 0.035734 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 0.000021 seconds.
+  path: Assets/Resources/StartAnim/play23.png
+  artifactKey: Guid(25c3bef490f4f09419622895300b2a44) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/StartAnim/play23.png using Guid(25c3bef490f4f09419622895300b2a44) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '0a7f2190fb48bdc54560376f1674f69d') in 0.038752 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 2
+========================================================================
+Received Import Request.
+  Time since last request: 2.258610 seconds.
+  path: Assets/Sprites/Spaceship tileset/Spaceship Tileset/characters/!$Consoles_diagonal.png
+  artifactKey: Guid(ac241e6f6cdecc34481541fadd378d5b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/Spaceship tileset/Spaceship Tileset/characters/!$Consoles_diagonal.png using Guid(ac241e6f6cdecc34481541fadd378d5b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1a197cbad224c556c26790e8639ae900') in 0.047843 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+========================================================================
+Received Import Request.
+  Time since last request: 0.000022 seconds.
+  path: Assets/Sprites/Spaceship tileset/Spaceship Tileset/characters/!$Spaceship_gate1.png
+  artifactKey: Guid(2938cdb58580d194682b54ac92c16e76) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sprites/Spaceship tileset/Spaceship Tileset/characters/!$Spaceship_gate1.png using Guid(2938cdb58580d194682b54ac92c16e76) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4a84b46588ad1cc03f2546aeaf31f30e') in 0.049104 seconds
+Number of updated asset objects reloaded before import = 0
+Number of asset objects unloaded after import = 3
+Editor requested this worker to shutdown with reason: Scaling down because of idle timeout
+TcpMessagingSession - receive error: operation aborted. errorcode: 995, details: The I/O operation has been aborted because of either a thread exit or an application request.
+AssetImportWorker is now disconnected from the server
+Process exiting
+Exiting without the bug reporter. Application will terminate with return code 0
