@@ -1,45 +1,116 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro; 
+using TMPro;
 
 public class GoalManager : MonoBehaviour
 {
-    public TextMeshProUGUI goalText; 
-    public int goalStar = 0; 
-    public int goalStarCount  = 1; 
-    public int goalPlanet = 0; 
-    public int goalPlanetCount = 1; 
-    public int goalJunk = 0;
-    public int goalJunkCount = 1; 
-    // Start is called before the first frame update
-    void Start()
+    [Header("Complete")]
+    public bool completeSystem = false;
+    [Header("Stats")]
+    public TextMeshProUGUI goalText;
+    public int currentStarCount = 0;
+    public int starGoal = 1;
+    public int currentPlanetCount = 0;
+    public int planetGoal = 1;
+    public int currentJunkCount = 0;
+    public int junkGoal = 1;
+    public void resetGoals()
     {
+        starGoal = 0;
+        starGoal = 0;
+        junkGoal = 0;
+    }
+    public void setStarGoal(int i)
+    {
+        starGoal = i;
+    }
+    public void setPlanetGoal(int i)
+    {
+        starGoal = i;
+    }
+    public void setJunkGoal(int i)
+    {
+        junkGoal = i;
+    }
+    public void setGoals(int junk, int star, int planet)
+    {
+        junkGoal = junk;
+        starGoal = star;
+        planetGoal = planet;
         calcGoalText(); 
     }
-    public void calcGoalText(){
-        string text = ""; 
-        if (goalStarCount > 0){
-            if (goalStar >= goalStarCount)
-                text += "<s>";  
-            text += "● Take Photo of " + goalStarCount + " Star\n"; 
-            if (goalStar >= goalStarCount)
-                text += "</s>";  
-        }
-        if (goalPlanetCount > 0){
-            if (goalPlanet >= goalPlanetCount)
-                text += "<s>";  
-            text += "● Take Photo of " + goalPlanetCount + " Planet\n"; 
-            if (goalPlanet >= goalPlanetCount)
-                text += "</s>";  
-        }
-        if (goalJunkCount > 0){
-            if (goalJunk >= goalJunkCount)
-                text += "<s>";  
-            text += "● Hook " + goalJunkCount + " Junk\n"; 
-            if (goalJunk >= goalJunkCount)
-                text += "</s>";  
-        }
-        goalText.text = text; 
+    public void addStarCount()
+    {
+        currentStarCount++;
     }
+    public void addPlanetCount()
+    {
+        currentPlanetCount++;
+    }
+    public void addJunkCount()
+    {
+        currentJunkCount++;
+    }
+    //-----------------------
+    void Start()
+    {
+        calcGoalText();
+    }
+    public void calcGoalText()
+    {
+        string text = "";
+        if (starGoal > 0)
+        {
+            if (currentStarCount >= starGoal)
+                text += "<s>";
+            text += "● Take Photo of " + starGoal + " Star\n";
+            if (currentStarCount >= starGoal)
+                text += "</s>";
+        }
+        if (planetGoal > 0)
+        {
+            if (currentPlanetCount >= planetGoal)
+                text += "<s>";
+            text += "● Take Photo of " + planetGoal + " Planet\n";
+            if (currentPlanetCount >= planetGoal)
+                text += "</s>";
+        }
+        if (junkGoal > 0)
+        {
+            if (currentJunkCount >= junkGoal)
+                text += "<s>";
+            text += "● Hook " + junkGoal + " Junk\n";
+            if (currentJunkCount >= junkGoal)
+                text += "</s>";
+        }
+        if (starGoal == 0 && planetGoal == 0 && junkGoal == 0)
+        {
+            text += "● Navigate to a new system to update goals.\n";
+        }
+        goalText.text = text;
+    }
+
+    public bool isJunkComplete()
+    {
+        if (currentJunkCount >= junkGoal)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    public bool isBodiesComplete()
+    {
+        if (currentStarCount >= starGoal && currentPlanetCount >= planetGoal)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    } 
 }

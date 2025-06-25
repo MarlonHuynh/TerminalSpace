@@ -6,15 +6,20 @@ using TMPro;
 
 public class ShopkeeperDialogue : MonoBehaviour
 {
+    public PlayerMovement playerMovement; 
+    public bool warningThief = false;  
+    public bool deathPenalty = false; 
+    public bool thiefReturnedItem = true; 
+    [Header("Shopkeeper UI")]
     public GameObject shopKeepingCanvas; 
     public TextMeshProUGUI ShopkeeperText; 
-    public Image ShopkeeperImage;
-    
-    // Audio variables
+    public GameObject lineRenderer; 
+    public GameObject headPivot; 
+    public Image ShopkeeperImage; 
+    [Header("Shopkeeper Audio")]
     public AudioSource audioSource;
     public AudioClip typeSound;
-
-    // Shopkeeper expressions
+    [Header("Shopkeeper Sprites")]
     public Sprite shp_normal;
     public Sprite shp_smile;
     public Sprite shp_realsmile;
@@ -27,17 +32,30 @@ public class ShopkeeperDialogue : MonoBehaviour
     public Sprite player_think;
     private Dictionary<string, Sprite> expressionMap;
     public bool dialogueDone = false; 
+    private string[,] randomPairs = new string[,]{}; 
     private string[,] pairs = new string[,]{}; 
-    private string[,] dialoguePairs = { 
-        { "Hey junker.", "shp_normal" },
+    private string[,] yourePoorPairs = {  
+        { "-Randomize-", "shp_unamused" },
+        { "Are you stupid? You don't have enough credits for that.", "shp_unamused" },
+        { "Sorry, need more credits.", "shp_unamused" },
+        { "You need to make more money, buddy.", "shp_unamused" },
+    }; 
+    private string[,] youreAThiefPairs = {   
+        { "In case you didn't notice, you have something of mine. You have 10 seconds to return it.", "shp_unamused" }
+    }; 
+    private string[,] youReturnedItemPairs = {   
+        { "Oh goody.", "shp_unamused" }
+    };
+    private string[,] youReturnedItem = {   
+        { "I warned you.", "shp_angry" }
+    };
+    private string[,] dialoguePairs = {
         { "Haven't seen you in a while.", "shp_normal" },
         { "You're lucky I managed to catch your ship before it ran out of fuel.", "shp_normal" },
-        { "If it weren't for me, you'd be dead.", "shp_unamused" },
-        { "Don't think I'm going soft on you.", "shp_normal" },
         { "You still owe me a lot of scrap, so go out there and fish for some.", "shp_unamused" },
-        { "This time, DON'T forget to document the planetary bodies you see too.", "shp_angry" },
-        { "I'll be around. And don't go too far again.", "shp_unamused" },
-        { "I really don't need any more cases of my little junkers going missing.", "shp_unamused" }
+        { "You can auto-navigate to the system I assigned using your terminal.", "shp_normal" },
+        { "After you're done, record your progress and I'll assign your next mission.", "shp_normal" },
+        { "Also... if you run out of fuel again, I can't promise little old me will be there to save you.", "shp_normal" }
     }; 
     private string[,] unamusedCheckInPairs = { 
         { "You're back? Did you forget what I said?", "shp_unamused"}, 
@@ -95,6 +113,8 @@ public class ShopkeeperDialogue : MonoBehaviour
 
     void Start()
     {
+        //lineRenderer.SetActive(false); 
+        //headPivot.SetActive(false); 
         // Initialize dictionary mapping string names to sprites
         expressionMap = new Dictionary<string, Sprite>()
         {
@@ -118,11 +138,22 @@ public class ShopkeeperDialogue : MonoBehaviour
         }
         // Set initial pairs
         pairs = dialoguePairs;  
+        randomPairs = null; 
     }
 
     public void startText()
     {  
-        if (dialogueDone) return;    
+        if (dialogueDone) return;   
+        playerMovement.movementEnabled = false; 
+        if (warningThief == true){
+            Debug.Log("Thief!"); 
+            pairs = youreAThiefPairs; 
+            StartCoroutine(DelayBeforeStartText());
+            return; 
+        } 
+        else if (playerMovement.carryingItem == true && warningThief == false){
+            randomPairs = yourePoorPairs; 
+        }
         StartCoroutine(DelayBeforeStartText());
     }
 
@@ -140,46 +171,69 @@ public class ShopkeeperDialogue : MonoBehaviour
 
             string text = pairs[count, 0];
             string expressionKey = pairs[count, 1];
-
+            // Make Canvas Active
             if (!shopKeepingCanvas.activeSelf){
                 shopKeepingCanvas.SetActive(true);  
             }
-
-            // Type text and play sound
+            // Play the randomized intro instead if theres one
+            if (randomPairs != null){
+                if (randomPairs[count, 0] != null){
+                    // Get random sentence from intro
+                    string flair = randomPairs[Random.Range(0, randomPairs.GetLength(0)), 0];
+                    yield return StartCoroutine(TypeText(flair, "shp_unamused"));
+                    yield return new WaitForSeconds(baseDelay);  
+                    nextLoadExist = false;
+                    break; // Break out of while
+                } 
+            } 
+            // Type sentence text  
             yield return StartCoroutine(TypeText(text, expressionKey)); 
+            // Wait between new sentences
             yield return new WaitForSeconds(baseDelay); 
             count++; 
+            // Checks if next sentence exists
             if (count >= pairs.GetLength(0))
             {
                 nextLoadExist = false;
-                break;
+                break; // Break out of while
             }
         } 
-        if (!nextLoadExist){ 
-            // Checks if there's another conversation
-            if (pairs == dialoguePairs)
-            {
-                pairs = unamusedCheckInPairs; 
+        if (!nextLoadExist)
+        {
+            // Checks if there's another conversation and assigns
+            if (randomPairs != null){ // If random spice text was prev text, don't assign new convo
+                randomPairs = null; 
             }
-            else if (pairs == unamusedCheckInPairs)
-            {
-                pairs = dontBotherPairs; 
+            else{   // If normal convo happened, assign new convo 
+                getNextPair();
             }
-            else
-            {
-                pairs = dontBotherPairs; 
-            }
-
             // End text
             nextLoadExist = true;
-            count = 0;   
-
+            count = 0;
             ShopkeeperText.text = "";
             ShopkeeperImage.sprite = player_think;
-            
-            shopKeepingCanvas.SetActive(false); 
-            GameObject.Find("--MainPlayer--").GetComponent<PlayerMovement>().movementEnabled = true;
-        }  
+            shopKeepingCanvas.SetActive(false);
+            playerMovement.movementEnabled = true;
+        }
+        if (warningThief == true){
+            StartCoroutine(thief10Seconds()); 
+        }
+    }
+
+    private void getNextPair()
+    {
+        if (pairs == dialoguePairs)
+        {
+            pairs = unamusedCheckInPairs;
+        }
+        else if (pairs == unamusedCheckInPairs)
+        {
+            pairs = dontBotherPairs;
+        }
+        else
+        {
+            pairs = dontBotherPairs;
+        }
     }
 
     IEnumerator TypeText(string sentence, string expressionKey)
@@ -237,6 +291,17 @@ public class ShopkeeperDialogue : MonoBehaviour
         // Optionally stop the audio source after fading out
         audioSource.Stop();
         audioSource.volume = 1f; 
+    }
+    IEnumerator thief10Seconds() {
+        Debug.Log("START OF WAIT..."); 
+        yield return new WaitForSeconds(10);
+        if (thiefReturnedItem == false){
+            Debug.Log("DEATH PENALTY!!!"); 
+            headPivot.SetActive(true); 
+            lineRenderer.SetActive(true); 
+            playerMovement.movementEnabled = false; 
+        }
+        playerMovement.movementEnabled = true; 
     }
 
 }

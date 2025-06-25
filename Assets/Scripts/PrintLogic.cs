@@ -5,9 +5,10 @@ using UnityEngine.UI;
 using TMPro; 
 
 public class PrintLogic : MonoBehaviour
-{ 
+{
+    public CommandTerminal commandTerminal; 
     public GameObject Camera3d;   
-    private CameraMovement Camera3dScript; 
+    public CameraMovement Camera3dScript; 
     public GameObject lowResDisplayObject;    // The UI gameobject to display the texture on
     public RenderTexture lowResRenderTexture; // The texture of the 3d cam
     public GameObject WarningClose;  
@@ -15,16 +16,12 @@ public class PrintLogic : MonoBehaviour
     public TextMeshProUGUI status2Text; 
     public TextMeshProUGUI printText;   
     public TextMeshProUGUI hookText;   
-    private GameObject currentBody; 
-    private GameObject currentJunk; 
+    private GameObject printBody; 
+    private GameObject printJunk; 
     bool snap = true;  
     bool hook = true; 
     public bool warning = false;  
-    int dotCounter = 0; 
-
-    public void start(){
-        Camera3dScript = Camera3d.GetComponent<CameraMovement>();
-    }
+    int dotCounter = 0;  
     public void snapPic(){
         printText.text = "Print";   
         StartCoroutine(waitSnap());   
@@ -48,8 +45,8 @@ public class PrintLogic : MonoBehaviour
             // Wait 1 sec
             yield return new WaitForSeconds(1f);  
             // Retrieve Junk object
-            currentJunk = Camera3d.GetComponent<CameraMovement>().currentJunk; 
-            GetComponent<ObjectOnScreenCheck>().setTarget(currentJunk); 
+            printJunk = Camera3d.GetComponent<CameraMovement>().currentJunk; 
+            GetComponent<ObjectOnScreenCheck>().setTarget(printJunk); 
             // Checks if centered or not centered, then display approprate text
             Color c = new Color(status2Text.color.r,status2Text.color.g,status2Text.color.b, 1f);
             status2Text.color = c;   
@@ -57,14 +54,18 @@ public class PrintLogic : MonoBehaviour
                 changeStatus2("Hooked."); 
                 status2Text.color = c; 
                 // Update goals
-                if (currentJunk.GetComponent<BodyStatus>().obtained == false){
-                    currentJunk.GetComponent<BodyStatus>().obtained = true; 
-                    if (currentJunk.GetComponent<BodyStatus>().isJunk){
-                        GetComponent<GoalManager>().goalJunk++; 
+                if (printJunk.GetComponent<BodyStatus>().obtained == false){
+                    printJunk.GetComponent<BodyStatus>().obtained = true;
+                    // Add to storage 
+                    commandTerminal.addToStorage(printJunk.GetComponent<BodyStatus>().junkName, printJunk.GetComponent<BodyStatus>().junkValue);  
+
+                    if (printJunk.GetComponent<BodyStatus>().isJunk)
+                    {
+                        GetComponent<GoalManager>().currentJunkCount++;
                     } 
                     GetComponent<GoalManager>().calcGoalText(); 
                     // Remove junk
-                    currentJunk.SetActive(false); 
+                    printJunk.SetActive(false); 
                     Camera3d.GetComponent<CameraMovement>().junkState = 0;  
                 }
             }
@@ -118,7 +119,11 @@ public class PrintLogic : MonoBehaviour
             printText.text = "Print";  
         }
     }  
-     
+    
+    public void changeStatus(string str, string str2){
+        statusText.text = str; 
+        status2Text.text = str2; 
+    }
     public void changeStatus(string str){
         statusText.text = str; 
     }
@@ -126,64 +131,79 @@ public class PrintLogic : MonoBehaviour
         status2Text.text = str; 
     }
 
-    public void changeStatusTextBasedOnText(){
-        int planetState = Camera3d.GetComponent<CameraMovement>().planetState;
-        int junkState = Camera3d.GetComponent<CameraMovement>().junkState;
-        if (junkState == 1){
-            changeStatus("Junk in proximity. Adjust rotation and hook to secure."); 
-        }
-        else if (junkState != 1){ // Else if there's no junk in range
-            Color c = new Color(statusText.color.r,statusText.color.g,statusText.color.b, 1f);
-            statusText.color = c; 
-            if (planetState == 2 && Camera3dScript.currentBody != null && currentBody.GetComponent<BodyStatus>().obtained == true){
-                changeStatus("Already obtained.");
-                return; 
-            }
-            switch (planetState){
-                case 0: 
-                    changeStatus("No planetary bodies or junk detected."); 
-                    break; 
-                case 1: 
-                    changeStatus("Too far from planetary body."); 
-                    break; 
-                case 2: 
-                    changeStatus("Good distance from planetary body."); 
-                    break;  
-                case 3: 
-                    changeStatus("Too close to planetary body!"); 
-                    break; 
-                default:  
-                    changeStatus("ERROR"); 
-                    break; 
-            } 
-            if (planetState == 2 && Camera3dScript.currentBody != null){ // When state is 2 it means good distance
-                currentBody = Camera3d.GetComponent<CameraMovement>().currentBody; 
-                GetComponent<ObjectOnScreenCheck>().setTarget(currentBody); 
-                // Checks if centered 
-                if (GetComponent<ObjectOnScreenCheck>().checkInView() == true){
-                    changeStatus2("Centered and obtained."); 
-                    status2Text.color = c;  
-                    obtain(currentBody);  // Update goals
-                }
-                else if (GetComponent<ObjectOnScreenCheck>().checkInView() == false){
-                    changeStatus2("Not centered."); 
-                    status2Text.color = c; 
-                } 
-            }
-        }
+    public void changeStatusToFullAlpha(){
+        Color c = new Color(statusText.color.r,statusText.color.g,statusText.color.b, 1f);
+        statusText.color = c;  // change to full alpha
+        status2Text.color = c;  // change to full alpha
     }
 
-    public void obtain(GameObject o){
-         if (currentBody.GetComponent<BodyStatus>().obtained == false){
-            currentBody.GetComponent<BodyStatus>().obtained = true; 
-            if (currentBody.GetComponent<BodyStatus>().isStar){
-                GetComponent<GoalManager>().goalStar++; 
-            } 
-            else if (currentBody.GetComponent<BodyStatus>().isPlanet){
-                GetComponent<GoalManager>().goalPlanet++; 
+    public void changeStatusTextBasedOnText(){
+        Debug.Log("Changing status text!");
+        int planetState = Camera3dScript.planetState;
+        int junkState = Camera3dScript.junkState;
+        if (junkState == 1){ // If Junk in range
+            Debug.Log("Junk in range!");
+            changeStatus("Junk in proximity. Adjust rotation and hook to secure.", ""); 
+            changeStatusToFullAlpha(); 
+            return;
+        }
+        // Else if there's no junk in range and already obtained
+        Debug.Log("Junk not in range!");
+        if (planetState == 2 && Camera3dScript.currentBody != null && Camera3dScript.currentBody != null){
+            BodyStatus status = Camera3dScript.currentBody.GetComponent<BodyStatus>(); 
+            if (status != null)
+            { 
+                if (status.obtained){
+                    changeStatus("Already obtained.", ""); 
+                    changeStatusToFullAlpha(); 
+                    return;
+                }
+
             }  
-            else if (currentBody.GetComponent<BodyStatus>().isJunk){
-                GetComponent<GoalManager>().goalJunk++; 
+        } 
+        // Else if there's no junk in range print the normal texts
+        Debug.Log("Planet state: " + planetState); 
+        switch (planetState){
+            case 0: 
+                changeStatus("No planetary bodies or junk detected.", ""); 
+                break; 
+            case 1: 
+                changeStatus("Too far from planetary body.", ""); 
+                break; 
+            case 2: 
+                changeStatus("Good distance from planetary body.", ""); 
+                break;  
+            case 3: 
+                changeStatus("Too close to planetary body!", ""); 
+                break; 
+            default:  
+                changeStatus("ERROR", ""); 
+                break; 
+        } 
+        if (planetState == 2 && Camera3dScript.currentBody != null){ // When state is 2 it means good distance
+            printBody = Camera3dScript.currentBody; 
+            GetComponent<ObjectOnScreenCheck>().setTarget(printBody); 
+            // Checks if centered 
+            if (GetComponent<ObjectOnScreenCheck>().checkInView() == true){  
+                obtain(printBody);  // Update goals
+            }
+            else if (GetComponent<ObjectOnScreenCheck>().checkInView() == false){
+                changeStatus2("Not centered.");  
+            } 
+        }
+        changeStatusToFullAlpha(); 
+    }
+    public void obtain(GameObject o){
+         if (printBody.GetComponent<BodyStatus>().obtained == false){
+            printBody.GetComponent<BodyStatus>().obtained = true; 
+            if (printBody.GetComponent<BodyStatus>().isStar){
+                GetComponent<GoalManager>().currentStarCount++; 
+            } 
+            else if (printBody.GetComponent<BodyStatus>().isPlanet){
+                GetComponent<GoalManager>().currentPlanetCount++; 
+            }  
+            else if (printBody.GetComponent<BodyStatus>().isJunk){
+                GetComponent<GoalManager>().currentJunkCount++; 
             }  
             GetComponent<GoalManager>().calcGoalText(); 
         }

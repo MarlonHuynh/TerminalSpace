@@ -1,7 +1,11 @@
 using UnityEngine;
 
 public class CameraAutoZoom : MonoBehaviour
-{
+{ 
+    public float minZ = -4f; 
+    public float maxZ = -9.5f; 
+    public float targetZ;
+    public float vertSpeed; 
     public float originalFov = 60f; 
     public float targetFOV = 30f; // The desired FOV after zoom
     public float zoomSpeed = 2f; // Speed of the zooming effect
@@ -13,13 +17,32 @@ public class CameraAutoZoom : MonoBehaviour
     private bool isZooming = false;
 
     void Start()
-    { 
-        lastPosition = transform.position;
+    {
+        lastPosition = transform.position;  
     }
 
     void Update()
     {
-        float moveX = Input.GetAxis("Horizontal"); // A/D or Left/Right
+        float moveX = Input.GetAxis("Horizontal"); // A/D or Left/Right  
+
+        float moveZ = Input.GetAxis("Vertical");
+        // Only update targetZ when pressing keys
+        if (moveZ > 0)
+        {
+            targetZ = minZ;
+        }
+        else if (moveZ < 0)
+        {
+            targetZ = maxZ;
+        } 
+        else{
+            targetZ = transform.localPosition.z; 
+        }
+        // Smooth movement
+        Vector3 currentPos = transform.localPosition;
+        float newZ = Mathf.Lerp(currentPos.z, targetZ, Time.deltaTime * vertSpeed);
+        transform.localPosition = new Vector3(currentPos.x, currentPos.y, newZ);
+
         // Cam
         if (moveX < 0)
         {
@@ -43,9 +66,7 @@ public class CameraAutoZoom : MonoBehaviour
             idleTimer = 0f; 
             isZooming = false; 
             cam.fieldOfView = originalFov; 
-        }
-
-
+        }  
         // Check if the camera has moved
         if (transform.position != lastPosition)
         {
@@ -68,6 +89,6 @@ public class CameraAutoZoom : MonoBehaviour
         if (isZooming)
         {
             cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, targetFOV, Time.deltaTime * zoomSpeed);
-        }
+        }  
     }
 }
