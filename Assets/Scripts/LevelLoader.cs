@@ -6,7 +6,7 @@ public class LevelLoader : MonoBehaviour
 {
     public GameObject camera3d; 
     public GoalManager goalManager;
-    public CommandTerminal commandTerminal; 
+    public TerminalCommand commandTerminal; 
     public GameObject starPrefab;
     public GameObject planetPrefab;
     public GameObject junkPrefab;

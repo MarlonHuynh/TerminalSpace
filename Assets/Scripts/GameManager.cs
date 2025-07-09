@@ -8,12 +8,13 @@ using UnityEngine.Rendering;
 public class GameManager : MonoBehaviour
 {
     [Header("GameObjects")]
-    public GameObject spaceship;
-    public GameObject terminals;
-    public GameObject TopViewCanvas;
-    public GameObject AstroCanvas;
-    public GameObject StorageCanvas;
-    public GameObject floatingScene;
+    public GameObject spaceshipObj;
+    public GameObject terminalsObj;
+    public GameObject titleScreenObj; 
+    public GameObject navigationCanvasObj;
+    public GameObject astroCanvasObj;
+    public GameObject commandCanvasObj;
+    public GameObject floatingSceneObj;
     public FloatingThroughSpace floatingThroughSpace; 
     public FuelTankMovement fuelTankMovement;
     public CameraMovement cameraMovement;
@@ -24,8 +25,7 @@ public class GameManager : MonoBehaviour
     public GameObject WarningCrash;
     public GameObject BlackScreen;
     public GameObject GameOver;
-    public TextMeshProUGUI gameOverText;
-    private bool is2d = true;
+    public TextMeshProUGUI gameOverText; 
     // Start is called before the first frame update
     void Start()
     { //
@@ -33,59 +33,66 @@ public class GameManager : MonoBehaviour
         GraphicsSettings.transparencySortAxis = new Vector3(0, 1, 0); // Example: Sorting along the Y-axis 
 
         threeDcamera.Render();
-        terminals.SetActive(false);
-        floatingScene.SetActive(false); 
+        terminalsObj.SetActive(false);
+        floatingSceneObj.SetActive(false);
+
+        goTitleScreen(); 
+    }
+
+    public void goTitleScreen()
+    {
+        titleScreenObj.SetActive(true); 
+        spaceshipObj.SetActive(false); 
+        terminalsObj.SetActive(false);
+            navigationCanvasObj.SetActive(false);
+            astroCanvasObj.SetActive(false);
+            commandCanvasObj.SetActive(false);  
     }
     public void goShip()
     {
-        spaceship.SetActive(true);
-
-        terminals.SetActive(false);
-        TopViewCanvas.SetActive(false);
-        AstroCanvas.SetActive(false);
-        StorageCanvas.SetActive(false);
-
-        fuelTankMovement.setFuel(cameraMovement.fuel);
-    }
-
+        titleScreenObj.SetActive(false); 
+        spaceshipObj.SetActive(true); 
+        terminalsObj.SetActive(false);
+            navigationCanvasObj.SetActive(false);
+            astroCanvasObj.SetActive(false);
+            commandCanvasObj.SetActive(false); 
+            fuelTankMovement.setFuel(cameraMovement.fuel);
+    } 
     public void goAstro()
     {
-        spaceship.SetActive(false);
-
-        terminals.SetActive(true);
-        TopViewCanvas.SetActive(false);
-        AstroCanvas.SetActive(true);
-        StorageCanvas.SetActive(false);
-    }
-
+        spaceshipObj.SetActive(false); 
+        terminalsObj.SetActive(true);
+            navigationCanvasObj.SetActive(false);
+            astroCanvasObj.SetActive(true);
+            commandCanvasObj.SetActive(false);
+    } 
     public void goTopView()
     {
-        spaceship.SetActive(false);
-
-        terminals.SetActive(true);
-        TopViewCanvas.SetActive(true); 
-        AstroCanvas.SetActive(false);
-        StorageCanvas.SetActive(false);
-    }
-
+        titleScreenObj.SetActive(false); 
+        spaceshipObj.SetActive(false); 
+        terminalsObj.SetActive(true);
+            navigationCanvasObj.SetActive(true); 
+            astroCanvasObj.SetActive(false);
+            commandCanvasObj.SetActive(false);
+    } 
     public void goStorage()
     {
-        spaceship.SetActive(false);
-
-        terminals.SetActive(true);
-        TopViewCanvas.SetActive(false);
-        AstroCanvas.SetActive(false);
-        StorageCanvas.SetActive(true);
+        titleScreenObj.SetActive(false); 
+        spaceshipObj.SetActive(false); 
+        terminalsObj.SetActive(true);
+            navigationCanvasObj.SetActive(false);
+            astroCanvasObj.SetActive(false);
+            commandCanvasObj.SetActive(true);
     }
-
     public void goFloatingPlayer()
     {
-        spaceship.SetActive(false);
-        terminals.SetActive(false);
-        TopViewCanvas.SetActive(false);
-        AstroCanvas.SetActive(false);
-        StorageCanvas.SetActive(false);
-        floatingScene.SetActive(true);
+        titleScreenObj.SetActive(false); 
+        spaceshipObj.SetActive(false);
+        terminalsObj.SetActive(false);
+            navigationCanvasObj.SetActive(false);
+            astroCanvasObj.SetActive(false);
+            commandCanvasObj.SetActive(false);
+        floatingSceneObj.SetActive(true);
         floatingThroughSpace.startFloat(); 
         
     }
