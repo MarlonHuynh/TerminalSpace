@@ -9,7 +9,7 @@ public class FacePlayer : MonoBehaviour
 
     public float bobSpeed = 1f;    // Speed of bobbing (cycles per second)
     public float bobHeight = 0.25f; // How far up/down it bobs
-
+ 
     void Start()
     {
         // Store the initial forward direction (on XZ plane)
@@ -18,7 +18,7 @@ public class FacePlayer : MonoBehaviour
         initialForward.Normalize();
 
         // Store the original starting position
-        initialPosition = transform.position;
+        initialPosition = transform.position; 
     }
 
     void LateUpdate()

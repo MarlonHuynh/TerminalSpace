@@ -102,6 +102,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetCamera: {fileID: 0}
+  lockToY: 1
 --- !u!212 &4355457515368860502
 SpriteRenderer:
   m_ObjectHideFlags: 0

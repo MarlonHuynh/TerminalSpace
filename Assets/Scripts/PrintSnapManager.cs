@@ -79,8 +79,9 @@ public class PrintSnapManager : MonoBehaviour
                         GetComponent<GoalManager>().currentJunkCount++;
                     }
                     GetComponent<GoalManager>().calcGoalText();
-                    // Remove junk
-                    printJunk.SetActive(false);
+                    // DESTROY --Remove-- junk
+                    Destroy(printJunk); 
+                    //printJunk.SetActive(false);
                     Camera3d.GetComponent<CameraMovement>().junkState = 0;
                 }
             }

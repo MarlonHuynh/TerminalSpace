@@ -6,23 +6,35 @@ public class FaceCamera : MonoBehaviour
 {
     // The camera the sprite should face
     public Camera targetCamera;
+    public bool lockToY; 
 
-    private void Start()
+    public void setCamera(Camera c)
     {
-        // If no specific camera is assigned, default to the main camera
-        if (targetCamera == null)
-        {
-            targetCamera = Camera.main;
-        }
+        targetCamera = c;
     }
 
     private void LateUpdate()
     {
-        // Make the sprite face the target camera
         if (targetCamera != null)
         {
             Vector3 cameraDirection = targetCamera.transform.position - transform.position;
-            transform.rotation = Quaternion.LookRotation(-cameraDirection, Vector3.up);
+
+            if (lockToY)
+            {
+                // Flatten the direction on the Y-axis (ignore vertical difference)
+                cameraDirection.y = 0f;
+
+                // Prevent LookRotation error if direction becomes zero
+                if (cameraDirection != Vector3.zero)
+                {
+                    transform.rotation = Quaternion.LookRotation(-cameraDirection);
+                }
+            }
+            else
+            {
+                transform.rotation = Quaternion.LookRotation(-cameraDirection, Vector3.up);
+            }
         }
     }
+
 }

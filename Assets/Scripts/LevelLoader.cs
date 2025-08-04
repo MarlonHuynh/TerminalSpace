@@ -1,17 +1,19 @@
 using System.Collections.Generic; 
 using UnityEngine; 
-using TMPro; 
+using TMPro;
+using System;
 
 public class LevelLoader : MonoBehaviour
 {
-    public GameObject camera3d; 
+    public GameObject camera3d;
     public GoalManager goalManager;
-    public TerminalCommand commandTerminal; 
+    public TerminalCommand commandTerminal;
     public GameObject starPrefab;
+    public GameObject blackholePrefab; 
     public GameObject planetPrefab;
     public GameObject junkPrefab;
     public GameObject shopkeeperShipPrefab;
-    public TextMeshProUGUI titleText; 
+    public TextMeshProUGUI titleText;
     Texture2D starTexture;
     Texture2D planet1Texture;
     Texture2D planet2Texture;
@@ -22,23 +24,25 @@ public class LevelLoader : MonoBehaviour
     Texture2D ringTexture;
     private string currentStar;
     private string currentPlanet;
-    private int loadedLevel; 
-    private List<GameObject> allBodies = new List<GameObject>();
-    private int currentIncompleteLevel = 1; 
+    private int loadedLevel;
+    public List<GameObject> allBodies = new List<GameObject>();
+    public List<GameObject> uncompletedBodies = new List<GameObject>();
+    private int currentIncompleteLevel = 1;
     public string[,] levelCompletions = {
         {"Lone-88", "Inherent"}, // 0
         {"Proxima-16", "Incomplete"}, // 1
-        {"Luxe-10", "X"},
-        {"Ridge-65", "X"}
+        {"Luxe-10", "Incomplete"}, // 2
+        {"Ridge-65", "Incomplete"}, // 3
+        {"Magnetic", "Incomplete"} // 4
     };
-    public List<string[]> validLevels = new List<string[]>(); 
-    
+    public List<string[]> validLevels = new List<string[]>();
+
     // Load initial level 
     void Start()
     {
         loadedLevel = 0;
         loadLevel(loadedLevel);
-        calculateValidLevels(); 
+        calculateValidLevels();
     }
     // Method to load a level 
     public void loadLevel(int level)
@@ -52,42 +56,68 @@ public class LevelLoader : MonoBehaviour
             Debug.Log("Error: Inavlid level number to load.");
             return;
         }
-        if (level == 0)
+        else if (level == 0)
         {
             // Instantiate Star 
-            GameObject star = Instantiate(starPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-            star.transform.localScale = new Vector3(300, 300, 300);
-            allBodies.Add(star);
+            GameObject star = createStar(starPrefab, 500, Color.white);
             // Instantiate ShopkeeperShip 
             GameObject shop = Instantiate(shopkeeperShipPrefab, new Vector3(-5, 0, -30), Quaternion.identity);
             shop.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
             allBodies.Add(shop);
-            // Add Goals (none)
-            goalManager.setGoals(0, 0, 0);
-            titleText.text = levelCompletions[level, 0];
+            shop.GetComponent<FaceCamera>().setCamera(camera3d.GetComponent<Camera>());
+            goalManager.resetGoals();
         }
-        if (level == 1)
+        else if (level == 1) // Proxima-16
         {
             // Instantiate Star 
-            GameObject star = Instantiate(starPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-            star.transform.localScale = new Vector3(300, 300, 300);
-            allBodies.Add(star);
+            GameObject star = createStar(starPrefab, 400, Color.white);
             // Instantiate Planet(s) 
-            GameObject planet = Instantiate(planetPrefab, new Vector3(100, 0, 0), Quaternion.identity);
-            planet.transform.localScale = new Vector3(100, 100, 100);
-            planet.GetComponent<CircularPath>().setCenterTarget(star, 80);
-            allBodies.Add(planet);
+            // "Lush"
+            GameObject planet = createPlanet(planetPrefab, 75, 0, star, 120, Color.white, false); 
             // Instantiate Junk 
-            GameObject junk = Instantiate(junkPrefab, new Vector3(100, 0, 0), Quaternion.identity);
-            junk.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-            junk.GetComponent<CircularPath>().setCenterTarget(planet, 10);
-            junk.GetComponent<BodyStatus>().junkName = "Old Satellite";
-            junk.GetComponent<BodyStatus>().junkValue = 100f;
-            allBodies.Add(junk);
-            // Set Goals
-            goalManager.setGoals(1, 1, 1);
-            titleText.text = levelCompletions[level, 0];
+            createJunk(junkPrefab, "Old Satellite", 100f, 0.5f, planet, 10, 90);
         }
+        else if (level == 2) // Luxe-10
+        {
+            // Instantiate Star 
+            GameObject star = createStar(starPrefab, 500, Color.red);
+            // Instantiate Planet(s) 
+            // "Dust", Gas Giant
+            GameObject planet1 = createPlanet(planetPrefab, 50, 80, star, 80, Color.white, false);
+            GameObject planet2 = createPlanet(planetPrefab, 120, 120, star, 250, Color.white, false);
+            // Instantiate Junk 
+            createJunk(junkPrefab, "Palladium Asteroid", 100f, 0.5f, star, 20, 90);
+            createJunk(junkPrefab, "Sealed Metal Box", 100f, 0.5f, planet2, 10, 90);
+        }
+        else if (level == 3) // Ridge 
+        {
+            // Instantiate Star 
+            GameObject star = createStar(starPrefab, 500, Color.red);
+            // Instantiate Planet(s) 
+            // Rocky, Sand, Gas 
+            GameObject planet1 = createPlanet(planetPrefab, 50, 260, star, 120, Color.white, false);
+            GameObject planet2 = createPlanet(planetPrefab, 80, 60, star, 120, Color.white, false);
+            GameObject planet3 = createPlanet(planetPrefab, 120, 130, star, 200, Color.white, false);
+            GameObject planet4 = createPlanet(planetPrefab, 150, 150, star, 250, Color.white, true);
+            // Instantiate Junk 
+            createJunk(junkPrefab, "Small Palladium Asteroid", 100f, 0.5f, planet1, 10, 90);
+            createJunk(junkPrefab, "Spaceship Crash Parts", 100f, 0.5f, planet3, 15, 90);
+        }
+        else if (level == 4)// Magnetic 
+        {
+            // Instantiate Star 
+            GameObject star = createStar(blackholePrefab, 200, Color.black);
+            // Instantiate Planet(s) 
+            // Ice planets, Gas giant
+            GameObject planet1 = createPlanet(planetPrefab, 50, 80, star, 120, Color.white, false);
+            GameObject planet2 = createPlanet(planetPrefab, 70, 120, star, 100, Color.white, false);
+            GameObject planet3 = createPlanet(planetPrefab, 90, 180, star, 120, Color.white, false);
+            GameObject planet4 = createPlanet(planetPrefab, 120, 230, star, 120, Color.white, false);
+            GameObject planet5 = createPlanet(planetPrefab, 130, 10, star, 200, Color.white, false);
+            createJunk(junkPrefab, "Degenerate Hyperdrive", 100f, 0.5f, star, 10, 90);
+        }
+        titleText.text = levelCompletions[level, 0];
+        uncompletedBodies = allBodies; 
     }
     // Method to recalculate validLevels (Levels have the secondary characteristics of Inherent, Incomplete, or Complete and not X which are not unlocked yet)
     public void calculateValidLevels()
@@ -101,7 +131,7 @@ public class LevelLoader : MonoBehaviour
             }
         }
     }
-   // Mark the current incomplete level as complete and unlock the next level
+    // Mark the current incomplete level as complete and unlock the next level
     public void markCompleteAndAddNewLevel()
     {
         // Mark as Complete
@@ -115,8 +145,8 @@ public class LevelLoader : MonoBehaviour
         {
             levelCompletions[nextLevel, 1] = "Incomplete";
         }
-        calculateValidLevels(); 
-    } 
+        calculateValidLevels();
+    }
     // Destroys all body gameobjects in a level 
     public void destroyAllBodies()
     {
@@ -126,5 +156,64 @@ public class LevelLoader : MonoBehaviour
                 Destroy(body);
         }
         allBodies.Clear(); // Optional: clear the list after deleting
-    }  
+        uncompletedBodies.Clear(); 
+    }
+    public GameObject createStar(GameObject starPrefab, float scale, Color color)
+    {
+        GameObject star = Instantiate(starPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        star.transform.localScale = new Vector3(scale, scale, scale);
+        allBodies.Add(star);
+        goalManager.setStarGoal(goalManager.getStarGoal() + 1); 
+        // Change Color of Star
+        Transform starMeshTransform = star.transform.Find("StarMesh");
+        if (starMeshTransform != null)
+        {
+            MeshRenderer meshRenderer = starMeshTransform.GetComponent<MeshRenderer>();
+            if (meshRenderer != null)
+            { 
+                meshRenderer.material.color = color;  
+            }
+        }
+        // Assign camera component if Black Hole
+        if (starPrefab == blackholePrefab)
+        {
+            Transform eventHorizon = star.transform.Find("EventHorizon");
+            if (eventHorizon != null)
+            {
+                eventHorizon.GetComponent<FaceCamera>().setCamera(camera3d.GetComponent<Camera>());
+            }
+        }
+        return star; 
+    }
+    public GameObject createPlanet(GameObject planetPrefab, int distance, float angle, GameObject starToOrbit, float scale, Color color, bool ringed)
+    {
+        GameObject planet = Instantiate(planetPrefab, new Vector3(distance, 0, 0), Quaternion.identity);
+        planet.transform.localScale = new Vector3(scale, scale, scale);
+        planet.GetComponent<CircularPath>().setCenterTarget(starToOrbit, distance, angle);
+        if (!ringed)
+        {
+            Transform ringTransform = planetPrefab.transform.Find("Ring");
+            Debug.Log("Finding ring.."); 
+            GameObject ring = ringTransform != null ? ringTransform.gameObject : null;
+            if (ring != null)
+            {
+                Debug.Log("Found ring."); 
+                ring.SetActive(false); 
+            }
+        }
+        allBodies.Add(planet);
+        goalManager.setPlanetGoal(goalManager.getPlanetGoal() + 1); 
+        return planet; 
+    }
+    public void createJunk(GameObject junkPrefab, string junkName, float junkValue, float scale, GameObject objectToOrbit, int orbitDist, float orbitAngle)
+    {
+        GameObject junk = Instantiate(junkPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        junk.transform.localScale = new Vector3(scale, scale, scale);
+        junk.GetComponent<CircularPath>().setCenterTarget(objectToOrbit, orbitDist, orbitAngle);
+        junk.GetComponent<BodyStatus>().junkName = junkName;
+        junk.GetComponent<BodyStatus>().junkValue = junkValue;
+        goalManager.setJunkGoal(goalManager.getJunkGoal() + 1); 
+        junk.GetComponent<FaceCamera>().setCamera(camera3d.GetComponent<Camera>()); 
+        allBodies.Add(junk);
+    }
 }

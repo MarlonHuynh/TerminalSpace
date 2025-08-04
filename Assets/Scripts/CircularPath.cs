@@ -10,20 +10,13 @@ public class CircularPath : MonoBehaviour
     public float startingAngle = 0f; // Initial angle in degrees
     public float rotationSpeed = 30f; // Rotation speed of the object itself
 
-    private float angle; // Angle in radians
-
-    public 
-
-    void Start()
-    {
-        // Convert starting angle to radians
-        angle = startingAngle * Mathf.Deg2Rad;
-    }
-    public void setCenterTarget(GameObject centerTarget_in, int distance)
+    private float angle; // Angle in radians 
+    public void setCenterTarget(GameObject centerTarget_in, float distance, float startingAngle)
     {
         centerTarget = centerTarget_in;
         centerPoint = centerTarget.GetComponent<Transform>();
-        radius = distance; 
+        radius = distance;
+        angle = startingAngle * Mathf.Deg2Rad;
     } 
     public void setCenterTarget(int distance)
     {

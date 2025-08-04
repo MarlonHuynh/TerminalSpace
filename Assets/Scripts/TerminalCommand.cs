@@ -146,6 +146,7 @@ public class TerminalCommand : MonoBehaviour
                     {
                         cameraMovement.takeHyperjumpFuel(); 
                         displayAutoNav(); // Update display
+                        goalManager.resetGoals();
                         levelLoader.loadLevel(autoNavCount); 
                     }
                     prevAutoNavCount = autoNavCount; // Reset prevAutoNavCount so that the currently loaded system doesn't reload if player clicks aagin

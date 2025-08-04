@@ -18,20 +18,24 @@ public class GoalManager : MonoBehaviour
     public void resetGoals()
     {
         starGoal = 0;
-        starGoal = 0;
+        planetGoal = 0;
         junkGoal = 0;
+        calcGoalText(); 
     }
     public void setStarGoal(int i)
     {
         starGoal = i;
+        calcGoalText(); 
     }
     public void setPlanetGoal(int i)
     {
-        starGoal = i;
+        planetGoal = i;
+        calcGoalText(); 
     }
     public void setJunkGoal(int i)
     {
         junkGoal = i;
+        calcGoalText(); 
     }
     public void setGoals(int junk, int star, int planet)
     {
@@ -39,6 +43,18 @@ public class GoalManager : MonoBehaviour
         starGoal = star;
         planetGoal = planet;
         calcGoalText(); 
+    }
+    public int getStarGoal()
+    {
+        return starGoal; 
+    }
+    public int getJunkGoal()
+    {
+        return junkGoal; 
+    }
+    public int getPlanetGoal()
+    {
+        return planetGoal; 
     }
     public void addStarCount()
     {
