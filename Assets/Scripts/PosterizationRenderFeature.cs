@@ -20,7 +20,7 @@ public class PosterizationRenderFeature : ScriptableRendererFeature
                 return;
 
             CommandBuffer cmd = CommandBufferPool.Get("Posterization Effect");
-            RenderTargetIdentifier source = renderingData.cameraData.renderer.cameraColorTarget;
+            RenderTargetIdentifier source = renderingData.cameraData.renderer.cameraColorTargetHandle;
 
             // Apply the posterization material
             cmd.Blit(source, source, posterizationMaterial);

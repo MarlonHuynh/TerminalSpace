@@ -11,16 +11,16 @@ public class ShipCutsceneManager : MonoBehaviour
     public GameObject player;
     public GameObject playerSpr;
     public GameObject playerStartAnim;
-    public Light lightToFade;
+    public Light light;
     public GameObject floorPivotR;
     public GameObject floorPivotL;
-    private Color defaultLightColor; 
+    private Color originalLightColor; 
     [Header("Intro Vars")]
     public bool introOn = false;
     public float flashingDelay = 0.5f;
     public int flashingNum = 10;
     private int flashingCount = 0;
-    public float dark = 3f;
+    public float darkTime = 3f;
     public float fadeIn = 2f; // Time to fade from 0 to 500 
     public float shakeMagnitude = 0.2f; // The intensity of the shake
     public float shakeDuration = 0.5f; // Duration of the initial shake
@@ -30,37 +30,36 @@ public class ShipCutsceneManager : MonoBehaviour
     private bool isPullingDown = false; 
     private bool ejectShakeOn = false; 
     public float burstForce = 10f; 
-
-    void Start()
-    {
+  
+    public void checkIntro(){
+        Debug.Log("Checking intro"); 
         originalCameraPosition = camera.transform.position;
-        defaultLightColor = lightToFade.color; 
+        originalLightColor = light.color; 
         if (introOn)
         {
-            introCutscene();
+            BeepFX.SetActive(true);
+            BeepFX.GetComponent<AudioControl>().playAlteredAudio(); 
+            CrashFX.SetActive(true);
+            CrashFX.GetComponent<AudioControl>().playAlteredAudio(); 
+            light.intensity = 0f;
+            originalCameraPosition = camera.transform.position;
+            shakeTimeRemaining = shakeDuration;
+            playerSpr.SetActive(false);
+            player.GetComponent<PlayerMovement>().movementEnabled = false;
+            StartCoroutine(flashLight());
         }
         else if (!introOn)
         { // off 
             playerSpr.SetActive(true);
             player.GetComponent<PlayerMovement>().movementEnabled = true;
             playerStartAnim.SetActive(false);
-            lightToFade.intensity = 500f;
+            light.intensity = 500f;
             BeepFX.SetActive(false);
             CrashFX.SetActive(false);
         }
-    }
+    } 
 
-    public void introCutscene()
-    { 
-        lightToFade.intensity = 0f;
-        originalCameraPosition = camera.transform.position;
-        shakeTimeRemaining = shakeDuration;
-        playerSpr.SetActive(false);
-        player.GetComponent<PlayerMovement>().movementEnabled = false;
-        StartCoroutine(flashLight(lightToFade));
-    }
-
-    IEnumerator flashLight(Light light)
+    IEnumerator flashLight()
     {
         while (flashingCount < flashingNum)
         {
@@ -74,19 +73,20 @@ public class ShipCutsceneManager : MonoBehaviour
             light.intensity = 0f;
             flashingCount++;
         }
+        light.color = originalLightColor;
 
         if (flashingCount >= flashingNum)
         {
             // Start the fading process after the flashes
-            StartCoroutine(darkenLight(light));
+            StartCoroutine(fadeLightIn(light));
         }
     }
 
-    IEnumerator darkenLight(Light light)
+    IEnumerator fadeLightIn(Light light)
     { 
         light.intensity = 0f;
-        yield return new WaitForSeconds(dark);
-        StartCoroutine(FadeLight(lightToFade, fadeIn, 0f, 500f));
+        yield return new WaitForSeconds(darkTime);
+        StartCoroutine(FadeLight(this.light, fadeIn, 0f, 500f));
     }
 
     // Coroutine to fade light intensity
@@ -114,6 +114,7 @@ public class ShipCutsceneManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        /*
         // Handle the camera shake
         if (introOn == true)
         {
@@ -145,16 +146,16 @@ public class ShipCutsceneManager : MonoBehaviour
         if (isPullingDown == true)
         {
             player.GetComponent<Rigidbody>().AddForce(Vector3.down * burstForce, ForceMode.Impulse);
-        } 
+        } */
     }
 
     public void ejectCutscene()
     { 
-        lightToFade.intensity = 0f; 
+        light.intensity = 0f; 
         flashingCount = 0; 
         shakeTimeRemaining = 10f;
         ejectShakeOn = true; 
-        StartCoroutine(flashLightEject(lightToFade));
+        StartCoroutine(flashLightEject(light));
     }
 
     IEnumerator flashLightEject(Light light)

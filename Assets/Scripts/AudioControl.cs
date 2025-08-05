@@ -10,8 +10,12 @@ public class AudioControl : MonoBehaviour
     private void Start()
     { 
         audioSource = gameObject.GetComponent<AudioSource>(); 
+ 
+    }
 
-        // Set the AudioClip and start the audio
+    public void playAlteredAudio()
+    {
+         // Set the AudioClip and start the audio
         audioSource.time = audioTimeStart;
         audioSource.Play();
 
@@ -20,10 +24,10 @@ public class AudioControl : MonoBehaviour
     }
 
     private IEnumerator PlayAndFadeAudio()
-    {  
- 
-        yield return new WaitForSeconds(waitUntilFade);  
- 
+    {
+
+        yield return new WaitForSeconds(waitUntilFade);
+
         float startVolume = audioSource.volume;
 
         float elapsedTime = 0f;

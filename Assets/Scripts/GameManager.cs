@@ -26,6 +26,8 @@ public class GameManager : MonoBehaviour
     public GameObject BlackScreen;
     public GameObject GameOver;
     public TextMeshProUGUI gameOverText; 
+    [Header("Vars")]
+    public bool firstLoadCutscene = false; 
     // Start is called before the first frame update
     void Start()
     { //
@@ -50,6 +52,10 @@ public class GameManager : MonoBehaviour
     }
     public void goShip()
     {
+        if (firstLoadCutscene == false){
+            firstLoadCutscene = true; 
+            shipCutsceneMananger.checkIntro(); 
+        }
         titleScreenObj.SetActive(false); 
         spaceshipObj.SetActive(true); 
         terminalsObj.SetActive(false);

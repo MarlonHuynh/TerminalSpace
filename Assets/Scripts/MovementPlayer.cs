@@ -104,15 +104,15 @@ public class PlayerMovement : MonoBehaviour
             }
 
             // Set movement velocity (preserve Y velocity)
-            Vector3 newVelocity = new Vector3(move.x * moveSpeed, rb.velocity.y, move.z * moveSpeed);
-            rb.velocity = newVelocity;
+            Vector3 newVelocity = new Vector3(move.x * moveSpeed, rb.linearVelocity.y, move.z * moveSpeed);
+            rb.linearVelocity = newVelocity;
 
             // Clamp horizontal speed
-            Vector3 horizontalVelocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
+            Vector3 horizontalVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
             if (horizontalVelocity.magnitude > maxSpeed)
             {
                 horizontalVelocity = horizontalVelocity.normalized * maxSpeed;
-                rb.velocity = new Vector3(horizontalVelocity.x, rb.velocity.y, horizontalVelocity.z);
+                rb.linearVelocity = new Vector3(horizontalVelocity.x, rb.linearVelocity.y, horizontalVelocity.z);
             }
 
             // Update sprite facing
