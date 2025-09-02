@@ -21,6 +21,7 @@ public class PrintSnapManager : MonoBehaviour
     public TextMeshProUGUI hookText;    
     private GameObject printBody; 
     private GameObject printJunk;
+    public MiscSoundSFX miscSoundSFX; 
     [Header("States")]
     public bool canInteract = true;  
     public bool warning = false;  
@@ -35,22 +36,39 @@ public class PrintSnapManager : MonoBehaviour
     {
         if (canInteract)
         {
-            printText.text = "Print";
             canInteract = false;
+            miscSoundSFX.playShutterBeep(); 
+            printText.text = "Print";  
+            StartCoroutine(bounceBtnText(printText)); 
             StartCoroutine(waitSnap());
-            dotCounter = 0;
+            dotCounter = 0; 
         }
     }  
 
-    public void hookObj(){    
+    public void hookObj(){
         if (canInteract)
         {
-            hookText.text = "Hook";
             canInteract = false;
+            miscSoundSFX.playShutterBeep(); 
+            hookText.text = "Hook";
+            StartCoroutine(bounceBtnText(hookText)); 
             StartCoroutine(waitHook());
-            dotCounter = 0; 
+            dotCounter = 0;   
         } 
     }
+
+    IEnumerator bounceBtnText(TextMeshProUGUI txt)
+    { 
+        txt.fontSize += 1f;
+        yield return new WaitForSeconds(0.1f);
+        txt.fontSize += 1f; 
+        yield return new WaitForSeconds(0.1f);
+        txt.fontSize -= 1f; 
+        yield return new WaitForSeconds(0.1f);
+        txt.fontSize -= 1f; 
+    }
+ 
+
     IEnumerator waitHook()
     {    
         hookText.text = hookText.text + "."; 
@@ -135,7 +153,7 @@ public class PrintSnapManager : MonoBehaviour
                 WarningClose.SetActive(warning);
             }
             // Return to Top View
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(3f);
             // snap = true;
             // Reset
             Color d = new Color(statusText.color.r, statusText.color.g, statusText.color.b, 0f);
@@ -153,7 +171,7 @@ public class PrintSnapManager : MonoBehaviour
         }
     }  
     
-    public void changeStatus(string str, string str2){
+    public void changeStatusText(string str, string str2){
         statusText.text = str; 
         status2Text.text = str2; 
     }
@@ -164,53 +182,83 @@ public class PrintSnapManager : MonoBehaviour
         status2Text.text = str; 
     }
 
-    public void changeStatusToFullAlpha(){
-        Color c = new Color(statusText.color.r,statusText.color.g,statusText.color.b, 1f);
+    IEnumerator displayStatus()
+    {
+        Color c = new Color(statusText.color.r, statusText.color.g, statusText.color.b, 1f);
+        if (statusText.text != "")
+        {
+            miscSoundSFX.playDingBeep();
+        } 
         statusText.color = c;  // change to full alpha
+        yield return new WaitForSeconds(1f);
+         if (status2Text.text != "")
+        {
+            miscSoundSFX.playDingBeep();
+        } 
         status2Text.color = c;  // change to full alpha
-    }
+        yield return new WaitForSeconds(1f); 
+    } 
 
     public void changeStatusTextBasedOnText(){
-        Debug.Log("Changing status text!");
+        string tempStatus1 = ""; 
+        string tempStatus2 = ""; 
+
         int planetState = Camera3dScript.planetState;
         int junkState = Camera3dScript.junkState;
-        if (junkState == 1){ // If Junk in range
-            Debug.Log("Junk in range!");
-            changeStatus("Junk in proximity. Adjust rotation and hook to secure.", ""); 
-            changeStatusToFullAlpha(); 
+        //------------------------ JUNK IN RANGE -------------------- 
+        if (junkState == 1)
+        {  
+            tempStatus1 += "Junk in proximity. Adjust rotation and hook to secure.";
+            switch (planetState)
+            {
+                case 0:
+                    tempStatus2 += "No planetary bodies detected.";
+                    break;
+                case 1:
+                    tempStatus2 += "Too far from planetary body.";
+                    break;
+                case 2:
+                    tempStatus2 += "Good distance from planetary body.";
+                    break;
+                case 3:
+                    tempStatus2 += "Too close to planetary body!";
+                    break;
+                default:
+                    tempStatus2 += "SCRIPT ERROR";
+                    break;
+            }
+            changeStatusText(tempStatus1, tempStatus2);
+            StartCoroutine(displayStatus());
             return;
         }
-        // Else if there's no junk in range and already obtained
-        Debug.Log("Junk not in range!");
-        if (planetState == 2 && Camera3dScript.currentBody != null && Camera3dScript.currentBody != null){
-            BodyStatus status = Camera3dScript.currentBody.GetComponent<BodyStatus>(); 
-            if (status != null)
-            { 
-                if (status.obtained){
-                    changeStatus("Already obtained.", ""); 
-                    changeStatusToFullAlpha(); 
-                    return;
-                }
 
-            }  
-        } 
-        // Else if there's no junk in range print the normal texts
-        Debug.Log("Planet state: " + planetState); 
+        //------------------------ NO JUNK IN RANGE -------------------- 
         switch (planetState){
             case 0: 
-                changeStatus("No planetary bodies or junk detected.", ""); 
+                tempStatus1 += "No planetary bodies detected.";  
                 break; 
             case 1: 
-                changeStatus("Too far from planetary body.", ""); 
+                tempStatus1 += "Too far from planetary body."; 
                 break; 
-            case 2: 
-                changeStatus("Good distance from planetary body.", ""); 
+            case 2: // 2 is a good distance! Check if obtained
+                BodyStatus status = Camera3dScript.currentBody.GetComponent<BodyStatus>();
+                if (status != null)
+                {
+                    if (status.obtained)
+                    {
+                        tempStatus1 += "Already obtained";
+                    }
+                    else
+                    {
+                        tempStatus1 += "Good distance from planetary body."; 
+                    } 
+                } 
                 break;  
             case 3: 
-                changeStatus("Too close to planetary body!", ""); 
+                tempStatus1 += "Too close to planetary body!"; 
                 break; 
             default:  
-                changeStatus("ERROR", ""); 
+                tempStatus1 += "SCRIPT ERROR"; 
                 break; 
         } 
         if (planetState == 2 && Camera3dScript.currentBody != null){ // When state is 2 it means good distance
@@ -221,10 +269,11 @@ public class PrintSnapManager : MonoBehaviour
                 obtain(printBody);  // Update goals
             }
             else if (objectOnScreenCheck.checkInView() == false){
-                changeStatus2("Not centered.");  
+                tempStatus2 = "Not centered.";  
             } 
         }
-        changeStatusToFullAlpha(); 
+        changeStatusText(tempStatus1, tempStatus2); 
+        StartCoroutine(displayStatus());
     }
     public void obtain(GameObject o){
          if (printBody.GetComponent<BodyStatus>().obtained == false){

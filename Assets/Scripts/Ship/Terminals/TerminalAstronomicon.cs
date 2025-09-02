@@ -14,6 +14,7 @@ public class TerminalAstronomicon : MonoBehaviour
     public TextMeshProUGUI menuTitle; 
     public TextMeshProUGUI menuBody;  
     public TextMeshProUGUI speciesExBody; 
+    public MiscSoundSFX miscSoundSFX; 
     public Image astroImage; 
     public Sprite spr_human; 
     public Sprite spr_zwailek;
@@ -128,7 +129,7 @@ public class TerminalAstronomicon : MonoBehaviour
         // Back key for astronomicon
         if (Input.GetKeyDown(KeyCode.E)){
             switch (screenID) {
-                case MAIN_MENU_ID: 
+                case MAIN_MENU_ID: // exit 
                     canInteract = false; 
                     GameObject.Find("GameManager").GetComponent<GameManager>().goShip(); 
                     break;

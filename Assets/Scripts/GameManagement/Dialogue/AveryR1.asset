@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9afe18ef33d08b40b13fe93a85d4b05, type: 3}
+  m_Name: AveryR1
+  m_EditorClassIdentifier: 
+  conversationName: 
+  lines:
+  - text: Hehe... That's just how he is, I suppose. He doesn't mean much by it.
+    expressionKey: shp_normal
+  - text: I'd be irritable too if some intergalactic federation has a kill-on-sight
+      order for humans.
+    expressionKey: shp_normal
+  - text: When I found him, flying solo, I found him floating in space!
+    expressionKey: shp_normal
+  - text: Can you believe that Mamaris can hibernate for long periods of time in
+      space and be totally fine? It's incredible. They can even breathe from their
+      side vents!
+    expressionKey: shp_normal
+  - text: Anyways, so yeah, so he had 3 of his limbs chopped off for doing some grand
+      sin against Mamarian society or something, I dunno, he doesn't like to talk
+      much about it.
+    expressionKey: shp_normal
+  - text: Since then, I've took him under my wing, taught him how everything works,
+      the Federation, the universal language, et cetera. Turns out, he really has
+      a knack for fiddling and inventing stuff.
+    expressionKey: shp_normal
+  - text: So I guess that's why the I.F. decided to keep him, and plus having a non-hostile
+      Mamari to experiment with...
+    expressionKey: shp_normal
+  - text: ...It's despicable. But it's better than...
+    expressionKey: shp_normal
+  - text: Let's talk about something else.
+    expressionKey: shp_normal
+  nextDialogue: {fileID: 0}
+  hasButtons: 0
+  buttons: []

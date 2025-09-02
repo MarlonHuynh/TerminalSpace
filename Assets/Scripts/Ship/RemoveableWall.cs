@@ -42,26 +42,26 @@ public class RemoveableWall : MonoBehaviour
 
     public void WallUp()
     { 
-            if (Vector3.Distance(transform.position, startPosition) < 0.01f)// Only play sound when door is at the start position and Wall Up is called
-            {
-                audioSource.clip = openingSFX;
-                audioSource.time = 0;
-                audioSource.Play(); 
-            }
-            targetPosition = endPosition; // Set target to max position
-            isMovingUp = true; // Start movement  
+        if (Vector3.Distance(transform.position, startPosition) < 0.01f)// Only play sound when door is at the start position and Wall Up is called
+        {
+            audioSource.clip = openingSFX;
+            audioSource.time = 0;
+            audioSource.Play(); 
+        }
+        targetPosition = endPosition; // Set target to max position
+        isMovingUp = true; // Start movement  
     }
 
     public void WallDown()
     { 
-            if ((Vector3.Distance(transform.position, endPosition) < 0.01f) || isMovingUp) // Only play sound when door is at the end position and Wall Down is called
-            {
-                audioSource.clip = closingSFX;
-                audioSource.time = 0;
-                audioSource.Play(); 
-            }
-            targetPosition = startPosition; // Set target to min position
-            isMovingUp = false; 
-            isMovingDown = true; // Start movement  
+        if ((Vector3.Distance(transform.position, endPosition) < 0.01f) || isMovingUp) // Only play sound when door is at the end position and Wall Down is called
+        {
+            audioSource.clip = closingSFX;
+            audioSource.time = 0;
+            audioSource.Play(); 
+        }
+        targetPosition = startPosition; // Set target to min position
+        isMovingUp = false; 
+        isMovingDown = true; // Start movement  
     }
 }

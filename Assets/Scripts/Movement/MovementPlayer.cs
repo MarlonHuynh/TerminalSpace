@@ -2,6 +2,137 @@ using System.Collections;
 using UnityEngine;
 using TMPro;
 using UnityEngine.AI;
+using System.Threading;
+
+public class PlayerMovement : MonoBehaviour
+{
+    public InteractionPlayer interactionPlayer; 
+    [Header("Movement Settings")]
+    public bool jumpEnabled = true;
+    public float jumpForce = 100f; 
+    public float moveSpeed = 5f;
+    public float maxSpeed = 10f; // New max speed variable    
+    private Rigidbody rb;
+    public AudioSource walkAudio; 
+
+    [Header("Sprites")]
+    public MeshRenderer playerSpriteMeshRenderer;
+    public Transform playerSpriteTransform;
+    public Transform playerItemTransform;
+    public Material playerF;
+    public Material playerB;
+    public Material playerB2;
+    public Material playerL;
+    public Material playerR;
+    [Header("Other")]
+    public bool movementEnabled = false; 
+ 
+    void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+        playerSpriteTransform.rotation = Quaternion.Euler(0, 0, 0);    
+    }
+
+    void Update()
+    {
+        MovePlayer();
+    }
+    void MovePlayer()
+    {
+        if (movementEnabled)
+        {
+            // Get input for movement
+            float moveX = Input.GetAxis("Horizontal"); // A/D or Left/Right
+            float moveZ = Input.GetAxis("Vertical");   // W/S or Up/Down
+
+            Vector3 move;
+
+            if (!interactionPlayer.inShop)
+            {
+                move = transform.right * moveX + transform.forward * moveZ;
+            }
+            else
+            {
+                move = transform.right * (-moveZ) + transform.forward * moveX;
+            }
+
+            // Set movement velocity (preserve Y velocity)
+            Vector3 newVelocity = new Vector3(move.x * moveSpeed, rb.linearVelocity.y, move.z * moveSpeed);
+            rb.linearVelocity = newVelocity;
+
+            // Clamp horizontal speed
+            Vector3 horizontalVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
+            if (horizontalVelocity.magnitude > maxSpeed)
+            {
+                horizontalVelocity = horizontalVelocity.normalized * maxSpeed;
+                rb.linearVelocity = new Vector3(horizontalVelocity.x, rb.linearVelocity.y, horizontalVelocity.z);
+            }
+
+            // Update sprite facing
+            changeMaterialToCorrectFace(moveZ, moveX);
+
+            // Sounds
+            if ((moveX != 0 || moveZ != 0) && !walkAudio.isPlaying)
+            {
+                walkAudio.Play();
+            }
+            else if (moveX == 0 && moveZ == 0 && walkAudio.isPlaying)
+            {
+                walkAudio.Stop();
+            }
+            if (Input.GetKeyDown(KeyCode.B) && jumpEnabled)
+            {
+                GetComponent<Rigidbody>().AddForce(Vector3.down * jumpForce, ForceMode.Impulse);
+            } 
+        } 
+    }  
+
+    void changeMaterialToCorrectFace(float moveX, float moveZ)
+    {
+        if (moveX != 0 || moveZ != 0)
+        {
+            // Face correct direction
+            if (moveX > 0)
+            {
+                playerSpriteMeshRenderer.material = playerB;
+            }
+            else if (moveX < 0)
+            {
+                playerSpriteMeshRenderer.material = playerF;
+            }
+            if (moveZ > 0)
+            {
+                playerSpriteMeshRenderer.material = playerR;
+            }
+            else if (moveZ < 0)
+            {
+                playerSpriteMeshRenderer.material = playerL;
+            }
+            // Bounce the sprite for walking
+            float rotationZ = Mathf.Sin(Time.time * 15f) * 4f;
+            playerSpriteTransform.rotation = Quaternion.Euler(playerSpriteTransform.eulerAngles.x, playerSpriteTransform.eulerAngles.y, rotationZ);
+            playerItemTransform.rotation = Quaternion.Euler(playerSpriteTransform.eulerAngles.x, playerSpriteTransform.eulerAngles.y, rotationZ);
+
+        }
+        else
+        {
+            playerSpriteTransform.rotation = Quaternion.Euler(playerSpriteTransform.eulerAngles.x, playerSpriteTransform.eulerAngles.y, playerSpriteTransform.rotation.z);
+            playerItemTransform.rotation = Quaternion.Euler(playerSpriteTransform.eulerAngles.x, playerSpriteTransform.eulerAngles.y, playerSpriteTransform.rotation.z);
+        } 
+    } 
+} 
+
+
+//--------------
+
+
+/*
+
+using System.Collections;
+using UnityEngine;
+using TMPro;
+using UnityEngine.AI;
+using System.Threading;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -16,6 +147,8 @@ public class PlayerMovement : MonoBehaviour
     private Transform shipCameraTransform;
     private Rigidbody rb;
     public AudioSource walkAudio;
+    public Light spotlight;
+    public Light shiplight; 
     //
     [Header("Hitboxes")]
     public RemoveableWall leftRemoveableWall;
@@ -25,8 +158,7 @@ public class PlayerMovement : MonoBehaviour
     public GameObject astronomiconHitbox;
     public GameObject solarshieldHitbox;
     public GameObject shopkeeperDialogueHitbox;
-    public GameObject fuelHitbox; 
- 
+    public GameObject fuelHitbox;  
     public TextMeshProUGUI dockingPopup; 
 
     private bool isTouchingTerminal = false;
@@ -64,6 +196,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Other")]
     public bool movementEnabled = false;
     public bool shipNearShop = true;
+    private bool firstTimeExitShop = false; 
 
 
     void Start()
@@ -129,7 +262,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 GetComponent<Rigidbody>().AddForce(Vector3.down * jumpForce, ForceMode.Impulse);
             }
-
+            /*
             // SPACE Interactivity
             if (Input.GetKeyDown(KeyCode.Space))
             {
@@ -168,8 +301,7 @@ public class PlayerMovement : MonoBehaviour
                     gameManager.GetComponent<GameManager>().goStorage();
                 }
                 else if (inShop == false && isTouchingShop && shipNearShop)
-                { // Change cam and open wall
-                    Debug.Log("P!"); 
+                { // Change cam and open wall 
                     playerSpriteTransform.rotation = Quaternion.Euler(0, -90f, 0); // Turn player sprite right 90 deg
                     playerItemTransform.rotation = Quaternion.Euler(0, -90f, 0);
                     shopCamera.SetActive(true);
@@ -197,11 +329,8 @@ public class PlayerMovement : MonoBehaviour
                 { // Buy item 3
                     shop.takeCurrentItem();
                 }
-            }
-        }
-
-    }
-
+            }*/ 
+    /*
     void OnTriggerEnter(Collider other)
     { 
         if (other.gameObject == terminalHitbox)
@@ -282,26 +411,11 @@ public class PlayerMovement : MonoBehaviour
             leftRemoveableWall.WallDown(); 
             playerSpriteTransform.rotation = Quaternion.Euler(0, 0, 0);
             playerItemTransform.rotation = Quaternion.Euler(0, -90f, 0);
-            /*
-            if (carryingItem == true && ownedItem == false
-            && shopkeeperDialogue.warningThief == false)
+            if (firstTimeExitShop == false && shopkeeperDialogue.firstTalkedYet == true)
             {
-                shopkeeperDialogue.warningThief = true;
-                shopkeeperDialogue.thiefReturnedItem = false;
-                shopkeeperDialogue.startText();
+                firstTimeExitShop = true; 
+                StartCoroutine(StartCoLightOn());
             }
-            else if ((carryingItem == true && ownedItem == true) || (carryingItem == false && ownedItem == false))
-            {
-                isTouchingShop = false;
-                inShop = false;
-                shopCamera.SetActive(false);
-                shipCamera.SetActive(true);
-                leftRemoveableWall.WallDown();
-                Color c = new Color(dockText.color.r, dockText.color.g, dockText.color.b, 0f);
-                dockText.color = c;
-                playerSpriteTransform.rotation = Quaternion.Euler(0, 0, 0);
-                playerItemTransform.rotation = Quaternion.Euler(0, -90f, 0);
-            }*/
         }
         else if (other.gameObject == fuelHitbox)
         { 
@@ -323,6 +437,26 @@ public class PlayerMovement : MonoBehaviour
         {
             isTouchingItem3 = false;
         }
+    } 
+
+    IEnumerator StartCoLightOn()
+    {
+        spotlight.intensity = 0f;
+        yield return new WaitForSeconds(0.1f);
+        spotlight.intensity = 75f;
+        yield return new WaitForSeconds(0.1f);
+        spotlight.intensity = 0f;
+        yield return new WaitForSeconds(1f);
+        shiplight.intensity = 1000f;
+        yield return new WaitForSeconds(0.1f);
+        shiplight.intensity = 0f;
+        yield return new WaitForSeconds(0.1f);
+        shiplight.intensity = 1000f;
+        yield return new WaitForSeconds(0.1f);
+        shiplight.intensity = 0f; 
+        yield return new WaitForSeconds(0.1f);
+        shiplight.intensity = 1000f; 
+
     }
 
     void changeMaterialToCorrectFace(float moveX, float moveZ)
@@ -361,9 +495,10 @@ public class PlayerMovement : MonoBehaviour
     }
     // Stops any walking movement audio before switching 'scenes'
     void OnDisable() {
-    if (walkAudio != null && walkAudio.isPlaying) {
-        walkAudio.Stop();
+        if (walkAudio != null && walkAudio.isPlaying) {
+            walkAudio.Stop();
+        }
     }
-}
 } 
 
+*/

@@ -7,11 +7,12 @@ public class ShipCutsceneManager : MonoBehaviour
     public GameManager gameManager; 
     public GameObject BeepFX;
     public GameObject CrashFX;
-    public Camera camera;
+    public Camera mainCamera; 
     public GameObject player;
     public GameObject playerSpr;
     public GameObject playerStartAnim;
-    public Light light;
+    public Light spotLight;
+    public Light flashingLight;
     public GameObject floorPivotR;
     public GameObject floorPivotL;
     private Color originalLightColor; 
@@ -23,37 +24,41 @@ public class ShipCutsceneManager : MonoBehaviour
     public float darkTime = 3f;
     public float fadeIn = 2f; // Time to fade from 0 to 500 
     public float shakeMagnitude = 0.2f; // The intensity of the shake
-    public float shakeDuration = 0.5f; // Duration of the initial shake
-    public float shakeTimeRemaining;
-    private Vector3 originalCameraPosition;
+    public float shakeDuration = 5f; // Duration of the initial shake
+    private float shakeTimeRemaining;
+    public Vector3 originalCameraPosition;
     [Header("Eject Vars")]
     private bool isPullingDown = false; 
     private bool ejectShakeOn = false; 
-    public float burstForce = 10f; 
-  
-    public void checkIntro(){
-        Debug.Log("Checking intro"); 
-        originalCameraPosition = camera.transform.position;
-        originalLightColor = light.color; 
+    private float originalSpotLightIntensity; 
+    public float burstForce = 10f;
+
+    void Start()
+    {
+        originalCameraPosition = mainCamera.transform.position;
+        originalSpotLightIntensity = spotLight.intensity;
+        originalLightColor = flashingLight.color;
+        spotLight.intensity = 0f;
+    }
+    public void checkIntro()
+    {
         if (introOn)
         {
             BeepFX.SetActive(true);
-            BeepFX.GetComponent<AudioControl>().playAlteredAudio(); 
+            BeepFX.GetComponent<AudioControl>().playAlteredAudio();
             CrashFX.SetActive(true);
             CrashFX.GetComponent<AudioControl>().playAlteredAudio(); 
-            light.intensity = 0f;
-            originalCameraPosition = camera.transform.position;
             shakeTimeRemaining = shakeDuration;
             playerSpr.SetActive(false);
             player.GetComponent<PlayerMovement>().movementEnabled = false;
-            StartCoroutine(flashLight());
+            ejectShakeOn = true; 
+            StartCoroutine(flashLight());  
         }
         else if (!introOn)
         { // off 
             playerSpr.SetActive(true);
             player.GetComponent<PlayerMovement>().movementEnabled = true;
-            playerStartAnim.SetActive(false);
-            light.intensity = 500f;
+            playerStartAnim.SetActive(false); 
             BeepFX.SetActive(false);
             CrashFX.SetActive(false);
         }
@@ -65,29 +70,33 @@ public class ShipCutsceneManager : MonoBehaviour
         {
             yield return new WaitForSeconds(flashingDelay);
 
-            light.color = new Color(1f, 0.1f, 0f);  // Flash red
-            light.intensity = 500f; 
+            flashingLight.color = new Color(1f, 0.1f, 0f);  // Flash red
+            flashingLight.intensity = 500f; 
 
             yield return new WaitForSeconds(flashingDelay);
  
-            light.intensity = 0f;
+            flashingLight.intensity = 75f;
             flashingCount++;
         }
-        light.color = originalLightColor;
+        flashingLight.color = originalLightColor;
+        flashingLight.intensity = 0f;
+ 
+        playerStartAnim.GetComponent<FrameByFrameAnimation>().startWakeUp();
+        yield return new WaitForSeconds(8f);
 
         if (flashingCount >= flashingNum)
         {
-            // Start the fading process after the flashes
-            StartCoroutine(fadeLightIn(light));
+            spotLight.intensity = originalSpotLightIntensity;
+            yield return new WaitForSeconds(0.1f);
+            spotLight.intensity = 0f;
+            yield return new WaitForSeconds(0.1f);
+            spotLight.intensity = originalSpotLightIntensity;
+            yield return new WaitForSeconds(0.1f);
+            spotLight.intensity = 0f;
+            yield return new WaitForSeconds(0.1f);
+            spotLight.intensity = originalSpotLightIntensity;
         }
-    }
-
-    IEnumerator fadeLightIn(Light light)
-    { 
-        light.intensity = 0f;
-        yield return new WaitForSeconds(darkTime);
-        StartCoroutine(FadeLight(this.light, fadeIn, 0f, 500f));
-    }
+    } 
 
     // Coroutine to fade light intensity
     IEnumerator FadeLight(Light light, float duration, float startIntensity, float endIntensity)
@@ -114,18 +123,15 @@ public class ShipCutsceneManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        /*
         // Handle the camera shake
-        if (introOn == true)
+        if (introOn == true && ejectShakeOn == true && shakeTimeRemaining > 0)
         {
             if (shakeTimeRemaining > 0)
             {
+                Debug.Log("Shaking! " + shakeTimeRemaining); 
                 // Shake the camera by adding a random offset to the camera's position
                 Vector3 shakeOffset = Random.insideUnitSphere * shakeMagnitude;
-                camera.transform.position = originalCameraPosition + shakeOffset;
-
-                // Gradually reduce the shake magnitude over time
-                shakeMagnitude = Mathf.Lerp(shakeMagnitude, 0f, Time.deltaTime / shakeDuration);
+                mainCamera.transform.position = originalCameraPosition + shakeOffset; 
 
                 // Decrease the shake time remaining
                 shakeTimeRemaining -= Time.deltaTime;
@@ -133,33 +139,29 @@ public class ShipCutsceneManager : MonoBehaviour
             else if (shakeTimeRemaining <= 0)
             {
                 // Once the shake is finished, reset the camera position to its original
-                camera.transform.position = originalCameraPosition;
+                mainCamera.transform.position = originalCameraPosition;
             }
-        }
-        if (ejectShakeOn)
-        {
-            // Shake the camera by adding a random offset to the camera's position
-            Vector3 shakeOffset = Random.insideUnitSphere * shakeMagnitude;
-            camera.transform.position = originalCameraPosition + shakeOffset; 
-        }
+        } 
 
         if (isPullingDown == true)
         {
             player.GetComponent<Rigidbody>().AddForce(Vector3.down * burstForce, ForceMode.Impulse);
-        } */
+        }  
     }
 
     public void ejectCutscene()
     { 
-        light.intensity = 0f; 
+        flashingLight.intensity = 0f; 
         flashingCount = 0; 
         shakeTimeRemaining = 10f;
         ejectShakeOn = true; 
-        StartCoroutine(flashLightEject(light));
+        StartCoroutine(flashLightEject(flashingLight));
     }
 
     IEnumerator flashLightEject(Light light)
     {
+        
+        ejectShakeOn = true; 
         while (flashingCount < 10) // Flash 5 times then eject
         {
             yield return new WaitForSeconds(flashingDelay);
@@ -181,7 +183,7 @@ public class ShipCutsceneManager : MonoBehaviour
 
             if (flashingCount == 4)
             {
-                gameManager.goFloatingPlayer(); 
+                gameManager.goFloatingPlayer();
             }
         } 
     } 

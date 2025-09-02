@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class NavigationBack : MonoBehaviour
-{ 
-
+{
+    public MiscSoundSFX miscSoundSFX; 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E)){
+        if (Input.GetKeyDown(KeyCode.E)){ 
             GameObject.Find("GameManager").GetComponent<GameManager>().goShip(); 
         }
     }

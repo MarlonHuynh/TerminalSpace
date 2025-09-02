@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9afe18ef33d08b40b13fe93a85d4b05, type: 3}
+  m_Name: AveryPairs
+  m_EditorClassIdentifier: 
+  conversationName: 
+  lines:
+  - text: Heya!
+    expressionKey: player_think
+  - text: Who me? I'm filling in for Shopkeeper today. He's feeling under the weather.
+    expressionKey: player_think
+  - text: Name's Avery. I pilot this hunk of junk.
+    expressionKey: player_think
+  - text: I rarely get to meet the junkers since that's Shopkeeper's business, but
+      it's nice talking to other people. Not that Shopkeeper isn't fun to talk to!!
+    expressionKey: player_think
+  nextDialogue: {fileID: 11400000}
+  hasButtons: 1
+  buttons:
+  - buttonText: 'Why''s shopkeeper so pissy? '
+    nextDialogue: {fileID: 11400000, guid: 1dc4bd7e933b06c4588c3eec9d03d2eb, type: 2}
+  - buttonText: Are you his lover?
+    nextDialogue: {fileID: 11400000, guid: 95e6105cf8dafb445960ef6cecafdb43, type: 2}
+  - buttonText: 'I''m quitting. '
+    nextDialogue: {fileID: 11400000, guid: 95e6105cf8dafb445960ef6cecafdb43, type: 2}

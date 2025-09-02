@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     public GameObject astroCanvasObj;
     public GameObject commandCanvasObj;
     public GameObject floatingSceneObj;
+    public MiscSoundSFX miscSoundSFX; 
     public FloatingThroughSpace floatingThroughSpace;
     public FuelTankMovement fuelTankMovement;
     public CameraMovement cameraMovement;
@@ -23,9 +24,7 @@ public class GameManager : MonoBehaviour
     public Image blackScreen;
     private float fadeSpeed = 0.5f; 
     [Header("Music")]
-    public AudioSource musicSource;
-    public AudioClip titleMusic;
-    public AudioClip defaultMusic;
+    public AudioSource musicSource; 
     [Header("Cams")]
     public Camera threeDcamera;
     [Header("Game Over")]
@@ -52,10 +51,7 @@ public class GameManager : MonoBehaviour
     public void goTitleScreen()
     {
         pauseScreen.canPause = false;
-        musicSource.clip = titleMusic;
-        musicSource.time = 0f;
-        musicSource.volume = 1f; 
-        musicSource.Play();
+        miscSoundSFX.playTitleMusic();  
 
         titleScreenObj.SetActive(true);
         spaceshipObj.SetActive(false);
@@ -67,11 +63,9 @@ public class GameManager : MonoBehaviour
     public void goShip()
     {
         pauseScreen.canPause = true;
-        musicSource.clip = defaultMusic;
-        musicSource.time = 0f;
-        musicSource.volume = 0.5f; 
-        musicSource.Play();
-
+        miscSoundSFX.playShipMusic();
+        miscSoundSFX.playAmbientMusic(); 
+        
         if (firstLoadCutscene == false)
         {
             firstLoadCutscene = true;
@@ -184,29 +178,32 @@ public class GameManager : MonoBehaviour
     
     IEnumerator FadeOutAndGoShip()
     {
-        Color c = blackScreen.color;
-        c.a = 0f; // start transparent
-        blackScreen.color = c;
+        Color c = blackScreen.color; 
+        float startVolume = musicSource.volume;
+        float t = 0f;
 
-        // Make Opaque
+        // Make Opaque while fading music
         while (c.a < 1f)
         {
-            c.a += Time.deltaTime * fadeSpeed;
+            t += Time.deltaTime * fadeSpeed;
+
+            // Fade screen
+            c.a = Mathf.Clamp01(t);
             blackScreen.color = c;
+
+            // Fade music
+            musicSource.volume = Mathf.Lerp(startVolume, 0f, t);
+
             yield return null;
-        }
-        yield return new WaitForSeconds(1f); // Wait additional sec after screen is black
+        } 
+
+        yield return new WaitForSeconds(1f); // Extra silence pause
 
         // Go to ship
         goShip();
 
-        // End Transparent
-        while (c.a > 0f)
-        {
-            c.a -= Time.deltaTime * fadeSpeed;
-            blackScreen.color = c;
-            yield return null;
-        }
+        // Make blackscreen disappear. 
+        c = blackScreen.color; 
         c.a = 0f;  
         blackScreen.color = c;
     }

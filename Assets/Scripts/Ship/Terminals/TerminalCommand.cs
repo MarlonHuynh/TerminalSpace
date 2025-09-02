@@ -17,6 +17,7 @@ public class TerminalCommand : MonoBehaviour
     public GameObject menu;
     public TextMeshProUGUI menuTitle;
     public TextMeshProUGUI menuBody;
+    public MiscSoundSFX miscSoundSFX; 
     [Header("Debugging Vars")]
     private List<string[]> validLevels; 
     public int currentSystem = 0;  
@@ -90,7 +91,7 @@ public class TerminalCommand : MonoBehaviour
                     displayMenu();
                     break; 
                 default: // Exit
-                    canInteract = false;
+                    canInteract = false; 
                     GameObject.Find("GameManager").GetComponent<GameManager>().goShip();
                     break;
             }
@@ -98,23 +99,24 @@ public class TerminalCommand : MonoBehaviour
         // Space 
         if (Input.GetKeyDown(KeyCode.Space) && canInteract)
         {
+            miscSoundSFX.playShutterBeep(); 
             if (screenID == 0)
             { // On main screen 
                 switch (menuCount)
                 {
-                    case 0: // Click remote nab
+                    case 0: // Click remote nav 
                         displayAutoNav();
                         break;
-                    case 1: // Click Log 
+                    case 1: // Click Log  
                         if (validLevels[currentSystem][1] == "Inherent" || validLevels[currentSystem][1] == "Complete")
                         {
                             menuTitle.text = "Log";
                             menuBody.text = "System already logged.";
-                            StartCoroutine(InlineRoutine()); 
+                            StartCoroutine(InlineRoutine());
                             IEnumerator InlineRoutine()
                             {
                                 yield return new WaitForSeconds(1.5f);
-                                displayMenu(); 
+                                displayMenu();
                             }
                         }
                         else
@@ -122,10 +124,10 @@ public class TerminalCommand : MonoBehaviour
                             displayLog();
                         }
                         break;
-                    case 2: // Click Storage
+                    case 2: // Click Storage 
                         displayStorage();
                         break;
-                    case 3: // Click Exit
+                    case 3: // Click Exit 
                         canInteract = false;
                         GameObject.Find("GameManager").GetComponent<GameManager>().goShip();
                         break;
@@ -133,6 +135,7 @@ public class TerminalCommand : MonoBehaviour
             }
             else if (screenID == 1) // On nav screen
             {
+
                 if (autoNavCount == validLevels.Count) // Exit
                 {
                     displayMenu();
@@ -144,10 +147,10 @@ public class TerminalCommand : MonoBehaviour
                     // Only loads level if player clicks on a different level
                     if (prevAutoNavCount != autoNavCount)
                     {
-                        cameraMovement.takeHyperjumpFuel(); 
+                        cameraMovement.takeHyperjumpFuel();
                         displayAutoNav(); // Update display
                         goalManager.resetGoals();
-                        levelLoader.loadLevel(autoNavCount); 
+                        levelLoader.loadLevel(autoNavCount);
                     }
                     prevAutoNavCount = autoNavCount; // Reset prevAutoNavCount so that the currently loaded system doesn't reload if player clicks aagin
                 }

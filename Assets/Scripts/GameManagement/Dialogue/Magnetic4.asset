@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9afe18ef33d08b40b13fe93a85d4b05, type: 3}
+  m_Name: Magnetic4
+  m_EditorClassIdentifier: 
+  conversationName: 
+  lines:
+  - text: Welcome back. I've seen you made good progress collecting junk.
+    expressionKey: shp_normal
+  - text: You can sell your junk by talking to me.
+    expressionKey: shp_normal
+  - text: You can also purchase something using your credits to help you.
+    expressionKey: shp_normal
+  nextDialogue: {fileID: 11400000, guid: 10632b901e37cb147be3295bd5b55998, type: 2}

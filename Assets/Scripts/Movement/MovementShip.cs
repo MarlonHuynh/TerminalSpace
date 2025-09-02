@@ -7,13 +7,13 @@ public class CameraMovement : MonoBehaviour
     [Header("GameObjects")]
     public Button printBtn;
     public Button hookBtn;
-    public PlayerMovement playerMovement;
+    public InteractionPlayer playerMovement;
     public TextMeshProUGUI fuelText;
     public GameObject gameManager;
+    public MiscSoundSFX miscSoundSFX; 
     [Header("Movement")]
     public float moveSpeed = 10f;     // Speed for forward/backward movement
-    public float turnSpeed = 100f;   // Speed for turning
-
+    public float turnSpeed = 100f;   // Speed for turning 
     public float fuel = 200f;
     public float fuelRate = 1f; // Amt of fuel consumed per second 
     public float maxFuel = 200f;
@@ -84,6 +84,10 @@ public class CameraMovement : MonoBehaviour
         if (currentJunk != null)
         {
             gameManager.GetComponent<ObjectOnScreenCheck>().setTarget(currentJunk);
+        }
+
+        if (Input.GetKeyDown(KeyCode.E)){ 
+            GameObject.Find("GameManager").GetComponent<GameManager>().goShip(); 
         }
     }
 

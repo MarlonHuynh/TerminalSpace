@@ -5,8 +5,11 @@ using System;
 
 public class LevelLoader : MonoBehaviour
 {
-    public GameObject camera3d;
+    [Header("Assignables")]
     public GoalManager goalManager;
+    public InteractionPlayer playerInteraction; 
+    public ShopkeeperDialogue shopkeeperDialogue; 
+    public GameObject camera3d; 
     public TerminalCommand commandTerminal;
     public GameObject starPrefab;
     public GameObject blackholePrefab; 
@@ -14,26 +17,25 @@ public class LevelLoader : MonoBehaviour
     public GameObject junkPrefab;
     public GameObject shopkeeperShipPrefab;
     public TextMeshProUGUI titleText;
-    Texture2D starTexture;
-    Texture2D planet1Texture;
-    Texture2D planet2Texture;
-    Texture2D planet3Texture;
-    Texture2D planet4Texture;
-    Texture2D planet5Texture;
-    Texture2D planet6Texture;
-    Texture2D ringTexture;
-    private string currentStar;
-    private string currentPlanet;
-    private int loadedLevel;
+    [Header("Debug")]
+    public int loadedLevel;
     public List<GameObject> allBodies = new List<GameObject>();
     public List<GameObject> uncompletedBodies = new List<GameObject>();
+    // PRIVATE
     private int currentIncompleteLevel = 1;
+    private const int LONE88_ID0 = 0;
+    private const int PROXIMA16_ID1 = 1;
+    private const int LUXE10_ID2 = 2; 
+    private const int RIDGE65_ID3 = 3;
+    private const int MAGNETIC73_ID4 = 4;
+    public List<DialogueData> SystemDialogues;
+    
     public string[,] levelCompletions = {
         {"Lone-88", "Inherent"}, // 0
         {"Proxima-16", "Incomplete"}, // 1
-        {"Luxe-10", "Incomplete"}, // 2
-        {"Ridge-65", "Incomplete"}, // 3
-        {"Magnetic", "Incomplete"} // 4
+        {"Luxe-10", "X"}, // 2
+        {"Ridge-65", "X"}, // 3
+        {"Magnetic-73", "X"} // 4
     };
     public List<string[]> validLevels = new List<string[]>();
 
@@ -56,7 +58,7 @@ public class LevelLoader : MonoBehaviour
             Debug.Log("Error: Inavlid level number to load.");
             return;
         }
-        else if (level == 0)
+        else if (level == LONE88_ID0)
         {
             // Instantiate Star 
             GameObject star = createStar(starPrefab, 500, Color.white);
@@ -66,18 +68,22 @@ public class LevelLoader : MonoBehaviour
             allBodies.Add(shop);
             shop.GetComponent<FaceCamera>().setCamera(camera3d.GetComponent<Camera>());
             goalManager.resetGoals();
+            // Assign INITIAL Dialogue
+            shopkeeperDialogue.currentDialogue = SystemDialogues[level];
+            // State in range is true (isTrigger hasn't triggered yet when loaded)
+            playerInteraction.shipNearShop = true; 
         }
-        else if (level == 1) // Proxima-16
+        else if (level == PROXIMA16_ID1) // Proxima-16
         {
             // Instantiate Star 
             GameObject star = createStar(starPrefab, 400, Color.white);
             // Instantiate Planet(s) 
             // "Lush"
-            GameObject planet = createPlanet(planetPrefab, 75, 0, star, 120, Color.white, false); 
+            GameObject planet = createPlanet(planetPrefab, 75, 0, star, 120, Color.white, false);
             // Instantiate Junk 
             createJunk(junkPrefab, "Old Satellite", 100f, 0.5f, planet, 10, 90);
         }
-        else if (level == 2) // Luxe-10
+        else if (level == LUXE10_ID2) // Luxe-10
         {
             // Instantiate Star 
             GameObject star = createStar(starPrefab, 500, Color.red);
@@ -89,7 +95,7 @@ public class LevelLoader : MonoBehaviour
             createJunk(junkPrefab, "Palladium Asteroid", 100f, 0.5f, star, 20, 90);
             createJunk(junkPrefab, "Sealed Metal Box", 100f, 0.5f, planet2, 10, 90);
         }
-        else if (level == 3) // Ridge 
+        else if (level == RIDGE65_ID3) // Ridge 
         {
             // Instantiate Star 
             GameObject star = createStar(starPrefab, 500, Color.red);
@@ -103,7 +109,7 @@ public class LevelLoader : MonoBehaviour
             createJunk(junkPrefab, "Small Palladium Asteroid", 100f, 0.5f, planet1, 10, 90);
             createJunk(junkPrefab, "Spaceship Crash Parts", 100f, 0.5f, planet3, 15, 90);
         }
-        else if (level == 4)// Magnetic 
+        else if (level == MAGNETIC73_ID4)// Magnetic 
         {
             // Instantiate Star 
             GameObject star = createStar(blackholePrefab, 200, Color.black);
@@ -116,6 +122,7 @@ public class LevelLoader : MonoBehaviour
             GameObject planet5 = createPlanet(planetPrefab, 130, 10, star, 200, Color.white, false);
             createJunk(junkPrefab, "Degenerate Hyperdrive", 100f, 0.5f, star, 10, 90);
         }
+
         titleText.text = levelCompletions[level, 0];
         uncompletedBodies = allBodies; 
     }
@@ -145,6 +152,10 @@ public class LevelLoader : MonoBehaviour
         {
             levelCompletions[nextLevel, 1] = "Incomplete";
         }
+
+        // Update Starting Dialogue 
+        shopkeeperDialogue.currentDialogue = SystemDialogues[currentIncompleteLevel]; 
+
         calculateValidLevels();
     }
     // Destroys all body gameobjects in a level 

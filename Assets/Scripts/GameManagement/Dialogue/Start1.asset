@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9afe18ef33d08b40b13fe93a85d4b05, type: 3}
+  m_Name: Start1
+  m_EditorClassIdentifier: 
+  conversationName: Shopkeeper1
+  lines:
+  - text: 'Haven''t seen you in a while. '
+    expressionKey: shp_normal
+  - text: You're lucky I managed to catch your ship before it ran out of fuel.
+    expressionKey: shp_normal
+  - text: You still owe me a lot of scrap, so go out there and fish for some.
+    expressionKey: shp_unamused
+  - text: You can auto-navigate to the system I assigned using your terminal.
+    expressionKey: shp_normal
+  - text: After you're done, record your progress and I'll assign your next mission.
+    expressionKey: shp_normal
+  - text: Also... if you run out of fuel again, I can't promise little old me will
+      be there to save you.
+    expressionKey: shp_normal
+  nextDialogue: {fileID: 11400000, guid: a002a662ce3534f43902b89b2e9d372e, type: 2}
+  hasButtons: 0
+  buttons: []
