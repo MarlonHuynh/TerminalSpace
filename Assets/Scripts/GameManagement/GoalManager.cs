@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System;
 
 public class GoalManager : MonoBehaviour
 {
     [Header("Complete")]
+    public LevelLoader levelLoader; 
     public bool completeSystem = false;
     [Header("Stats")]
     public TextMeshProUGUI goalText;
@@ -73,38 +75,57 @@ public class GoalManager : MonoBehaviour
     {
         calcGoalText();
     }
+ 
     public void calcGoalText()
     {
-        string text = "";
-        if (starGoal > 0)
+        string toptext = "";
+        string bottext = ""; 
+        
+        // If the level was previously completed
+        if (levelLoader.levelCompletions[levelLoader.currentLevel, 1] == "OldComplete")
         {
-            if (currentStarCount >= starGoal)
-                text += "<s>";
-            text += "● Take Photo of " + starGoal + " Star\n";
-            if (currentStarCount >= starGoal)
-                text += "</s>";
+            toptext = "System already logged.\n";
         }
-        if (planetGoal > 0)
+        // The starting "inherent" level 
+        else if (starGoal == 0 && planetGoal == 0 && junkGoal == 0)
         {
-            if (currentPlanetCount >= planetGoal)
-                text += "<s>";
-            text += "● Take Photo of " + planetGoal + " Planet\n";
-            if (currentPlanetCount >= planetGoal)
-                text += "</s>";
+            toptext = "Use Command Terminal to navigate to new system.\n";
         }
-        if (junkGoal > 0)
+        // If the player newly completes an Incomplete level 
+        else if ((levelLoader.levelCompletions[levelLoader.currentLevel, 1] == "Incomplete")
+        && (currentStarCount >= starGoal && currentPlanetCount >= planetGoal && currentJunkCount >= junkGoal))
         {
-            if (currentJunkCount >= junkGoal)
-                text += "<s>";
-            text += "● Hook " + junkGoal + " Junk\n";
-            if (currentJunkCount >= junkGoal)
-                text += "</s>";
+            levelLoader.levelCompletions[levelLoader.currentLevel, 1] = "NewComplete";
+            toptext = "System completed. Please use Command Terminal to log.\n";
         }
-        if (starGoal == 0 && planetGoal == 0 && junkGoal == 0)
+        else
         {
-            text += "● Navigate to a new system to update goals.\n";
+            if (starGoal > 0)
+            {
+                if (currentStarCount >= starGoal)
+                    bottext += "<s>";
+                bottext += "● Take Photo of " + starGoal + " Star\n";
+                if (currentStarCount >= starGoal)
+                    bottext += "</s>";
+            }
+            if (planetGoal > 0)
+            {
+                if (currentPlanetCount >= planetGoal)
+                    bottext += "<s>";
+                bottext += "● Take Photo of " + planetGoal + " Planet\n";
+                if (currentPlanetCount >= planetGoal)
+                    bottext += "</s>";
+            }
+            if (junkGoal > 0)
+            {
+                if (currentJunkCount >= junkGoal)
+                    bottext += "<s>";
+                bottext += "● Hook " + junkGoal + " Junk\n";
+                if (currentJunkCount >= junkGoal)
+                    bottext += "</s>";
+            }
         }
-        goalText.text = text;
+        goalText.text = toptext + bottext;
     }
 
     public bool isJunkComplete()

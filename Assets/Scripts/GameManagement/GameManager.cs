@@ -4,10 +4,12 @@ using UnityEngine;
 using UnityEngine.UI; 
 using TMPro; 
 using UnityEngine.Rendering;
+using UnityEngine.EventSystems;
 
 public class GameManager : MonoBehaviour
 {
     [Header("GameObjects")]
+    public GameObject ShipLowResRenderCanvas; 
     public GameObject spaceshipObj;
     public GameObject terminalsObj;
     public GameObject titleScreenObj;
@@ -47,11 +49,39 @@ public class GameManager : MonoBehaviour
 
         goTitleScreen();
     }
+    void Update()
+    {
+        if (Input.GetMouseButtonDown(0)) // Left mouse click
+        {
+            // Create a pointer event at the mouse position
+            PointerEventData pointerData = new PointerEventData(EventSystem.current)
+            {
+                position = Input.mousePosition
+            };
+
+            // Raycast to all UI elements under the mouse
+            var results = new System.Collections.Generic.List<RaycastResult>();
+            EventSystem.current.RaycastAll(pointerData, results);
+
+            if (results.Count > 0)
+            {
+                foreach (var result in results)
+                {
+                    Debug.Log("Clicked on: " + result.gameObject.name);
+                }
+            }
+            else
+            {
+                Debug.Log("Clicked on nothing");
+            }
+        }
+    }
 
     public void goTitleScreen()
     {
+        ShipLowResRenderCanvas.SetActive(true); 
         pauseScreen.canPause = false;
-        miscSoundSFX.playTitleMusic();  
+        miscSoundSFX.playTitleMusic();
 
         titleScreenObj.SetActive(true);
         spaceshipObj.SetActive(false);
@@ -62,6 +92,7 @@ public class GameManager : MonoBehaviour
     }
     public void goShip()
     {
+        ShipLowResRenderCanvas.SetActive(true); 
         pauseScreen.canPause = true;
         miscSoundSFX.playShipMusic();
         miscSoundSFX.playAmbientMusic(); 
@@ -81,6 +112,7 @@ public class GameManager : MonoBehaviour
     }
     public void goAstro()
     {
+        ShipLowResRenderCanvas.SetActive(false); 
         pauseScreen.canPause = false;
 
         spaceshipObj.SetActive(false);
@@ -91,6 +123,7 @@ public class GameManager : MonoBehaviour
     }
     public void goTopView()
     {
+        ShipLowResRenderCanvas.SetActive(false); 
         pauseScreen.canPause = false;
 
         titleScreenObj.SetActive(false);
@@ -102,6 +135,7 @@ public class GameManager : MonoBehaviour
     }
     public void goStorage()
     {
+        ShipLowResRenderCanvas.SetActive(false); 
         pauseScreen.canPause = false;
 
         titleScreenObj.SetActive(false);
@@ -113,6 +147,7 @@ public class GameManager : MonoBehaviour
     }
     public void goFloatingPlayer()
     {
+        ShipLowResRenderCanvas.SetActive(false); 
         pauseScreen.canPause = false;
 
         titleScreenObj.SetActive(false);

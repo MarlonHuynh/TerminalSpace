@@ -8,16 +8,19 @@ public class InteractionPlayer : MonoBehaviour
     public PlayerMovement movementPlayer; 
     public GameObject shopHitbox;
     public Camera shopCamera;
+    public Camera shopCameraRenderToTexture; 
     public Camera shipCamera;
+    public Camera shipCameraRenderToTexture; 
     private Transform shipCameraTransform;
     private Rigidbody rb;
     public AudioSource walkAudio;
     public Light spotlight;
     public Light shiplight;
-    public MiscSoundSFX miscSoundSFX; 
+    public MiscSoundSFX miscSoundSFX;  
     //
     [Header("Hitboxes")]
     public RemoveableWall leftRemoveableWall; 
+    public RemoveableWall frontRemoveableWall;
     public GameObject terminalHitbox;
     public GameObject storageHitbox;
     public GameObject astronomiconHitbox;
@@ -82,15 +85,13 @@ public class InteractionPlayer : MonoBehaviour
                 {
                     miscSoundSFX.playAnalogBeep(); 
                     if (solarshieldDown)
-                    {
-                        Debug.Log("U!");
-                        GameObject.Find("FrontOutWall").GetComponent<RemoveableWall>().WallUp();
+                    { 
+                        frontRemoveableWall.WallUp();
                         solarshieldDown = false;
                     }
                     else if (!solarshieldDown)
-                    {
-                        Debug.Log("D!");
-                        GameObject.Find("FrontOutWall").GetComponent<RemoveableWall>().WallDown();
+                    { 
+                        frontRemoveableWall.WallDown();
                         solarshieldDown = true;
                     }
                 }
@@ -110,7 +111,9 @@ public class InteractionPlayer : MonoBehaviour
                 { // Change cam and open wall 
                     playerSpriteTransform.rotation = Quaternion.Euler(0, -90f, 0); // Turn player sprite right 90 deg 
                     shopCamera.gameObject.SetActive(true);
+                    shopCameraRenderToTexture.gameObject.SetActive(true);
                     shipCamera.gameObject.SetActive(false);
+                    shipCameraRenderToTexture.gameObject.SetActive(false); 
                     inShop = true;
                     leftRemoveableWall.WallUp();
                     dockingPopup.color = new Color(dockingPopup.color.r, dockingPopup.color.g, dockingPopup.color.b, 0f); 
@@ -214,7 +217,9 @@ public class InteractionPlayer : MonoBehaviour
             isTouchingShop = false;
             inShop = false;
             shopCamera.gameObject.SetActive(false);
+            shopCameraRenderToTexture.gameObject.SetActive(false); 
             shipCamera.gameObject.SetActive(true);
+            shipCameraRenderToTexture.gameObject.SetActive(true); 
             leftRemoveableWall.WallDown(); 
             playerSpriteTransform.rotation = Quaternion.Euler(0, 0, 0);
             if (firstTimeExitShop == false && shopkeeperDialogue.firstTalkedYet == true)

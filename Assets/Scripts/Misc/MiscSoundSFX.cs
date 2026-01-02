@@ -11,6 +11,15 @@ public class MiscSoundSFX : MonoBehaviour
      public AudioClip shutterbeepClip;
     public AudioSource ambientSource;
     public AudioClip ambientmusicClip;
+    public AudioSource miscFXSource;
+    public AudioClip hyperjumpClip;
+
+    public void playHyperjump()
+    {
+        miscFXSource.clip = hyperjumpClip;
+        miscFXSource.time = 0f;
+        miscFXSource.Play();
+    }
 
     public void playAnalogBeep()
     {

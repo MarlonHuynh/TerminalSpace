@@ -6,6 +6,7 @@ using System.Collections.Generic;
 
 public class TerminalAstronomicon : MonoBehaviour
 {
+    public bool unlockAll = true; 
     public GameObject menu; 
     public GameObject entries; 
     public ScrollRect scrollRect;
@@ -55,7 +56,7 @@ public class TerminalAstronomicon : MonoBehaviour
     };
     private List<string[]> validSystemTexts = new List<string[]>();
     private string[,] allSpeciesTexts = {
-        {"Human","The First.\n\nHumans are the most versatile and intelligent of species. Beginning sometimes in the late 2100s, Humans were the first species to discover space flight and employ it to an intergalactic degree. By the 2400s, classical species such as the Zwai'lek and Kainth were commonplace within their Intergalactic Federation and have formed a close bond to them. As they expanded more and more, they need more resources, more minerals, more energy to maintain the I.F. Upon hitting the border of the Universe, the Far Shore, and realising that many aspects of wellbeing in the Federation were dependent on the material resources, protocol [EXPUNGED] was enabled, to ensure [EXPUNGED] from [EXPUNGED].\n\n Today, humans are the most common of species within the I.F. and have enjoyed perks of being first-class citizens. Many humans with bloodlines going back millenias, have accumulated vast wealth over the generations, as such, they are the envy of other species.\n\nDepicted: Male and female", "Inherent"},
+        {"Human","The First.\n\nSome say humans are the most versatile of species. Beginning sometimes in the late 2100s, Humans were the first species to discover space flight and employ it to an intergalactic degree. By the 2400s, Classical-era species such as the Zwai'lek and Kainth were commonplace within their Intergalactic Federation and have formed a close bond to them. As they expanded more and more, they need more resources, more minerals, and more energy to maintain the I.F. Upon hitting the border of the Universe, the Far Shore, and realising that many aspects of wellbeing in the Federation were dependent on the material resources, protocol [EXPUNGED] was enabled, to ensure [EXPUNGED] from [EXPUNGED].\n\n Today, humans are the most common of species within the I.F. and have enjoyed perks of being first-class citizens. Many humans with bloodlines going back millenias, have accumulated vast wealth over the generations, as such, they are the envy of other species.\n\nDepicted: Male and female", "Inherent"},
         {"Zwai'lek","Warm-blooded Workers.\n\nIF Threat Level: D\n\nIF Acquisition Prospect: Acquired\n\nHailing from the dusty planet of Zwai'wen, the Zwai'lek are an adaptable and affable people. They only live for a few decade, and have a preference for large families. In addition, after the acquisition of their planet by the Intergalactic Federation, they often work jobs requiring manual labor, making them a valuable asset. They are the second most common species in the IF, possibly to their planet's early acquisition and biology. This earned them the name of 'space rats' which is considered a slur.\n\nIn a traditional tribe of Zwai'lek, the females are the caretakers of children while the males are the hunter of prey, although these dynamics aren't rigid to gender as many perform the other's traditional roles. Zwai'lek culture emphasize family, ambition, and togetherness. Even if two Zwai'lek in the Intergalactic Federation never met, they are more than ready to share drinks and call each other familial endearments. Indeed, Zwai'lek's ability to form strong life-long bonds is something that should be appreciated by other species, but instead to them, they are merely 'dirty space rats'.\n\nDepicted: Male and female", "Locked"},
         {"Mamari","Fearsome warmongers.\n\nIF Threat Level: A\n\nIF Aquisition Prospect: K.O.S., refugees to be monitored by [EXPUNGED]\n\nNot much is known about them as they are hostile to other species and refused on numerous counts to join the Intergalactic Federation. Locating their homeworld is of utmost priority to the safety of I.F. citizens. They tend to strike vulnerable areas in small, agile fleets, making them hard to track down.\n\nFrom what is known about their society, the Mamari are matriachal, with female Mamari serving commanding roles in government and war, while males who are considerably smaller and weaker, serve under them in servant roles. Interestingly enough, the sex of Mamari children are indifferentiable until puberty, where they then diverge into female and male. What causes this differentiation is unknown, but it is speculated to have something to do with [EXPUNGED]. Children Mamari refugees in the Intergalactic Federation have all matured into male, with only one known exception in the last 400 years.\n\nEven with the large differentiation in body between the sexes, both male and female Mamari's outer exoskeleton is extremely tough. They possess vent-like openings in their arms, legs, necks, and stomach that allows them to breathe more efficiently and they can speed up or slow down their heart rate, much like many hibernating species, when they see suitable. Their blood quickly fuses in the case of an open wound, allowing them to fight in open-hand combat even if they have a mortal wound. In one such case, a male Mamari had all of his limbs torn off, and was able to survive in space for 21 days in a hibernation state before he was found by an IF scout pilot.\n\nDue to the past and current nature of Mamari relations, all Mamari in the IF are to be monitored closely. Further details to come.\n\nDepicted: Male and female", "Locked"},
         {"Wewari","Peaceful, Short-statured Aquatics.\n\nIF Threat Level: F\n\nIF Acquisition Prospect: In-Progress\n\nIt is speculated that the Wewari and [EXPUNGED] share a common heritage, suggesting they branched off from one another about 6 M.Y.A. It is suprising then, to learn that the Wewari are a completely pacifist species, with all members being functionally the same in social roles and hierarchy, with the exception of a tribe's King(s) and Queen(s).\n\nWewari are short with their average height being 4''. Though they may look bumbling and chunky on land, their build allows for them to maneuver in the waters of their homeworld efficiently. The Wewari are traditionalist in belief, and prefer to stick to themselves and their homeworld rather than colonizing other water planets. Their planet often freezes over in cycles, and to adapt, the Wewari can enter a stone-like hibernation state to escape unfavorable conditions, with warm weather reviving them from their stone-like hibernation state.\n\nMost Wewari lack sexual characteristics, with the King(s) and Queen(s) being the only reproducing pair(s). It is unknown what causes maturity of a Wewari into a King, but as they do, they gain male reproductive organs and act as a leader of their Wewari tribe. Kings, who have matured long enough, step down from their position to let other Kings take their place and transition into birthing Queens, who become physically larger and unable to maneuver well as her body morphs to take on the duty of birth-giving. It is important to note that these though these physical changes do exist, the hierarchy of those sexually-reproducing and asexuals are equally valued in contribution to the health of the tribe.\n\nDepicted: Asexual, male, and female", "Locked"},  
@@ -68,10 +69,10 @@ public class TerminalAstronomicon : MonoBehaviour
     void Start()
     {
         entries.SetActive(false);
-        menu.SetActive(true);
-        extractValidList(ref validJournalTextList, allJournalTexts);
-        extractValidList(ref validSystemTexts, allSystemsTexts); 
-        extractValidList(ref validSpeciesTexts, allSpeciesTexts); 
+        menu.SetActive(true); 
+        extractValidList(ref validJournalTextList, allJournalTexts, unlockAll);
+        extractValidList(ref validSystemTexts, allSystemsTexts, unlockAll);
+        extractValidList(ref validSpeciesTexts, allSpeciesTexts, unlockAll); 
     }
     IEnumerator EnableInteractionAfterDelay(float delay) {
         yield return new WaitForSeconds(delay);
@@ -92,16 +93,16 @@ public class TerminalAstronomicon : MonoBehaviour
 
     void OnDisable(){
         canInteract = false; 
-    } 
+    }
 
-    // Gets a list of valid elements from a masterlist (3rd attribute must be Unlocked or Inherent, not Locked or X, etc)
-    private void extractValidList(ref List<string[]> subList, string[,] masterList)
+    // Gets a list of valid elements from a masterlist (3rd attribute must be Unlocked or Inherent, not Locked or X, etc. 
+    // unlockAll serves as an easy way to get all the entries for debugging purposes without unlocking through gameplay
+    private void extractValidList(ref List<string[]> subList, string[,] masterList, bool unlockAll)
     {
-        Debug.Log("Calculating valid texts");
         List<string[]> tempList = new List<string[]>();
         for (int i = 0; i < masterList.GetLength(0); i++)
         {
-            if (masterList[i, 2] == "Unlocked" || masterList[i, 2] == "Inherent")
+            if (unlockAll)
             {
                 string[] row = new string[masterList.GetLength(1)];
                 for (int j = 0; j < masterList.GetLength(1); j++)
@@ -109,10 +110,18 @@ public class TerminalAstronomicon : MonoBehaviour
                     row[j] = masterList[i, j];
                 }
                 tempList.Add(row);
-                Debug.Log("Added row");
+            }
+            else if (masterList[i, 2] == "Unlocked" || masterList[i, 2] == "Inherent")
+            {
+                string[] row = new string[masterList.GetLength(1)];
+                for (int j = 0; j < masterList.GetLength(1); j++)
+                {
+                    row[j] = masterList[i, j];
+                }
+                tempList.Add(row);
             }
         }
-        subList = tempList; 
+        subList = tempList;
     }
     /*
     ids: 

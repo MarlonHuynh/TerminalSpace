@@ -10,17 +10,25 @@ using System;
 public class TerminalCommand : MonoBehaviour
 {
     [Header("GameObjects")]
-    public CameraMovement cameraMovement; 
+    public CameraMovement cameraMovement;
     public GameManager gameManager;
     public GoalManager goalManager;
-    public LevelLoader levelLoader; 
-    public GameObject menu;
+    public LevelLoader levelLoader;
+    public Image logGraphic; 
     public TextMeshProUGUI menuTitle;
     public TextMeshProUGUI menuBody;
-    public MiscSoundSFX miscSoundSFX; 
+    public MiscSoundSFX miscSoundSFX;
+    public GameObject commandUI; 
+    public GameObject hyperjumpUI; 
+    public TextMeshProUGUI hyperjumpTitle;
+    public Image hyperjumpGraphic;
+    public Sprite hyperjumpGraphic_1; 
+    public Sprite hyperjumpGraphic_2; 
+    public Sprite hyperjumpGraphic_3; 
+
     [Header("Debugging Vars")]
-    private List<string[]> validLevels; 
-    public int currentSystem = 0;  
+    private List<string[]> validLevels;
+    public int currentSystem = 0;
     public List<string> junkNameList = new List<string>();
     public List<float> junkValueList = new List<float>();
     public int itemCount = 0;
@@ -28,13 +36,15 @@ public class TerminalCommand : MonoBehaviour
     public int screenID = 0;
     public int menuCount = 0;
     public int logCount = 0;
-    public int prevAutoNavCount = 0; 
-    public int autoNavCount = 0; 
-    public bool canInteract = false; 
+    public int prevAutoNavCount = 0;
+    public int autoNavCount = 0;
+    public bool canInteract = false;
     void Start()
     {
-        menu.SetActive(true);
-        validLevels = levelLoader.validLevels; 
+        //menu.SetActive(true);
+        commandUI.SetActive(true);
+        hyperjumpUI.SetActive(false); 
+        validLevels = levelLoader.validLevels;
     }
     IEnumerator EnableInteractionAfterDelay(float delay)
     {
@@ -45,17 +55,19 @@ public class TerminalCommand : MonoBehaviour
     void OnEnable()
     {
         menuTitle.text = "[BOOTING SYSTEM...]";
-        menuBody.text = ""; 
-        StartCoroutine(EnableInteractionAfterDelay(2f)); 
-    } 
-    void Update(){
-        if (canInteract){
-            Navigate(); 
+        menuBody.text = "";
+        StartCoroutine(EnableInteractionAfterDelay(2f));
+    }
+    void Update()
+    {
+        if (canInteract)
+        {
+            Navigate();
         }
-    } 
+    }
     void OnDisable()
     {
-        canInteract = false; 
+        canInteract = false;
     }
     public void addToStorage(string name, float value)
     {
@@ -89,9 +101,9 @@ public class TerminalCommand : MonoBehaviour
                     break;
                 case 3: // Storage
                     displayMenu();
-                    break; 
+                    break;
                 default: // Exit
-                    canInteract = false; 
+                    canInteract = false;
                     GameObject.Find("GameManager").GetComponent<GameManager>().goShip();
                     break;
             }
@@ -99,7 +111,7 @@ public class TerminalCommand : MonoBehaviour
         // Space 
         if (Input.GetKeyDown(KeyCode.Space) && canInteract)
         {
-            miscSoundSFX.playShutterBeep(); 
+            miscSoundSFX.playShutterBeep();
             if (screenID == 0)
             { // On main screen 
                 switch (menuCount)
@@ -148,9 +160,7 @@ public class TerminalCommand : MonoBehaviour
                     if (prevAutoNavCount != autoNavCount)
                     {
                         cameraMovement.takeHyperjumpFuel();
-                        displayAutoNav(); // Update display
-                        goalManager.resetGoals();
-                        levelLoader.loadLevel(autoNavCount);
+                        StartCoroutine(StartJumpCutscene());
                     }
                     prevAutoNavCount = autoNavCount; // Reset prevAutoNavCount so that the currently loaded system doesn't reload if player clicks aagin
                 }
@@ -181,7 +191,7 @@ public class TerminalCommand : MonoBehaviour
             }
             else if (screenID == 1) // On nav
             {
-                navUp(); 
+                navUp();
             }
             else if (screenID == 2) // On log 
             {
@@ -200,7 +210,7 @@ public class TerminalCommand : MonoBehaviour
             }
             else if (screenID == 1) // on nav
             {
-                navDown(); 
+                navDown();
             }
             else if (screenID == 2) // On log
             {
@@ -246,9 +256,9 @@ public class TerminalCommand : MonoBehaviour
     }
     private void navDown()
     {
-         if (autoNavCount > -1 && autoNavCount < validLevels.Count)
+        if (autoNavCount > -1 && autoNavCount < validLevels.Count)
         {
-            prevAutoNavCount = autoNavCount; 
+            prevAutoNavCount = autoNavCount;
             autoNavCount++;
             displayAutoNav();
         }
@@ -257,7 +267,7 @@ public class TerminalCommand : MonoBehaviour
     {
         if (autoNavCount > 0 && autoNavCount < validLevels.Count + 1)
         {
-            prevAutoNavCount = autoNavCount; 
+            prevAutoNavCount = autoNavCount;
             autoNavCount--;
             displayAutoNav();
         }
@@ -286,7 +296,7 @@ public class TerminalCommand : MonoBehaviour
         menuTitle.text = "Command";
         menuBody.text = s;
     }
-    
+
     public void displayAutoNav()
     {
         screenID = 1;
@@ -294,7 +304,7 @@ public class TerminalCommand : MonoBehaviour
         // Display
         s += "Select location to hyperjump to.\n";
         s += "Fuel: " + cameraMovement.fuel + " / " + cameraMovement.maxFuel + " (max)\n";
-        s += "Cost: 20 fuel\n\n"; 
+        s += "Cost: 20 fuel\n\n";
         for (int i = 0; i < validLevels.Count + 1; i++)
         {
             if (autoNavCount == i) // Navigation carrot
@@ -352,7 +362,7 @@ public class TerminalCommand : MonoBehaviour
         }
         menuTitle.text = "Log";
         menuBody.text = s;
-    } 
+    }
 
     private void displayStorage()
     {
@@ -376,6 +386,10 @@ public class TerminalCommand : MonoBehaviour
     }
     IEnumerator logDelay()
     {
+        Color clropaque = logGraphic.color;
+        clropaque.a = 1f;
+        logGraphic.color = clropaque; 
+
         menuTitle.text = "Logging.";
         menuBody.text = "";
         yield return new WaitForSeconds(1f);
@@ -386,13 +400,22 @@ public class TerminalCommand : MonoBehaviour
         if (goalManager.isJunkComplete() == true)
         {
             menuBody.text += "Logging successful.\n";
+
+            Color clrtrans = logGraphic.color;
+            clrtrans.a = 0f;
+            logGraphic.color = clrtrans;
+
             yield return new WaitForSeconds(1.5f);
             menuBody.text += "Please report to your assigned handler to deliver collected junk or proceed to the next mission using navigation terminal.\n";
-            levelLoader.markCompleteAndAddNewLevel(); 
+            levelLoader.markCompleteAndAddNewLevel();
             canInteract = true;
         }
         if (goalManager.isJunkComplete() == false)
         {
+            Color clrtrans = logGraphic.color;
+            clrtrans.a = 0f;
+            logGraphic.color = clrtrans;
+            
             menuBody.text += "<color=orange>Logging unsuccessful.</color=orange>\n";
             yield return new WaitForSeconds(0.3f);
             menuBody.text += "<color=red>CRITICAL WARNING: Missing salvage.</color=red>\n";
@@ -407,7 +430,48 @@ public class TerminalCommand : MonoBehaviour
             yield return new WaitForSeconds(0.3f);
             menuBody.text += "<color=orange>SYSTEM: Airlock override authorized.</color=orange>\n";
             yield return new WaitForSeconds(0.5f);
-            gameManager.triggerEjectCutscene(); 
-        } 
+            gameManager.triggerEjectCutscene();
+        }
+    }
+
+    IEnumerator StartJumpCutscene()
+    {
+        // Make all the other panels inactive 
+        // Make the hyperjump UI visible 
+        hyperjumpUI.SetActive(true);
+        commandUI.SetActive(false);
+        // Play jump sound    
+
+        hyperjumpTitle.text = "HYPERJUMP IN PROGRESS";
+        Color clropaque = hyperjumpGraphic.color;
+        clropaque.a = 1f;
+        hyperjumpGraphic.color = clropaque; 
+
+        for (int i = 0; i < 4; i++)
+        {
+            // Display 1
+            hyperjumpGraphic.sprite = hyperjumpGraphic_1;
+            yield return new WaitForSeconds(0.3f);
+            // Display 2
+            hyperjumpGraphic.sprite = hyperjumpGraphic_2;
+            yield return new WaitForSeconds(0.3f);
+            // Display 3
+            hyperjumpGraphic.sprite = hyperjumpGraphic_3;
+            yield return new WaitForSeconds(0.3f);
+        }
+
+        hyperjumpTitle.text = "JUMP SUCCESSFUL"; 
+        Color clrtrans = hyperjumpGraphic.color;
+        clrtrans.a = 0f;
+        hyperjumpGraphic.color = clrtrans; 
+        yield return new WaitForSeconds(1f);
+
+        // Go back to command
+        hyperjumpUI.SetActive(false);
+        commandUI.SetActive(true);
+        displayAutoNav(); 
+
+        // Load the level  
+        levelLoader.loadLevel(autoNavCount);
     }
 }

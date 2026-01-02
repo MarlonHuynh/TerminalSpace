@@ -21,6 +21,7 @@ public class LevelLoader : MonoBehaviour
     public int loadedLevel;
     public List<GameObject> allBodies = new List<GameObject>();
     public List<GameObject> uncompletedBodies = new List<GameObject>();
+    public int currentLevel; // Keep track of current level 
     // PRIVATE
     private int currentIncompleteLevel = 1;
     private const int LONE88_ID0 = 0;
@@ -30,6 +31,16 @@ public class LevelLoader : MonoBehaviour
     private const int MAGNETIC73_ID4 = 4;
     public List<DialogueData> SystemDialogues;
     
+    /*
+    
+    Statuses
+    "Inherent" - Unlocked immediately after starting game 
+    "Incomplete" - Unlocked but incomplete junk. Player needs to complete to unlock next level 
+    "OldComplete" - Marked after the player successfully complete objective and logged it IN THE PAST
+    "NewComplete" - Marked after the player successfully complete objective and needs to log it NOW 
+    "X" - Not unlocked yet 
+
+    */
     public string[,] levelCompletions = {
         {"Lone-88", "Inherent"}, // 0
         {"Proxima-16", "Incomplete"}, // 1
@@ -49,13 +60,14 @@ public class LevelLoader : MonoBehaviour
     // Method to load a level 
     public void loadLevel(int level)
     {
-        destroyAllBodies(); // Destroy all bodies
+        currentLevel = level; 
+        destroyAllBodies(); // Destroy all bodies 
         camera3d.transform.position = new Vector3(0, camera3d.transform.position.y, -30); // Reset Camera position
         camera3d.transform.rotation = Quaternion.Euler(0, 0, 0); // Reset Camera rotation 
 
         if (level < 0 || level > levelCompletions.Length)
         {
-            Debug.Log("Error: Inavlid level number to load.");
+            Debug.Log("Error: Invalid level number to load.");
             return;
         }
         else if (level == LONE88_ID0)
@@ -80,48 +92,57 @@ public class LevelLoader : MonoBehaviour
             // Instantiate Planet(s) 
             // "Lush"
             GameObject planet = createPlanet(planetPrefab, 75, 0, star, 120, Color.white, false);
-            // Instantiate Junk 
-            createJunk(junkPrefab, "Old Satellite", 100f, 0.5f, planet, 10, 90);
+            // Instantiate Junk only if the level is Incomplete
+            if (levelCompletions[level, 1] == "Incomplete")
+            {
+                createJunk(junkPrefab, "Old Satellite", 100f, 0.5f, planet, 10, 90);
+            }
         }
-        else if (level == LUXE10_ID2) // Luxe-10
-        {
-            // Instantiate Star 
-            GameObject star = createStar(starPrefab, 500, Color.red);
-            // Instantiate Planet(s) 
-            // "Dust", Gas Giant
-            GameObject planet1 = createPlanet(planetPrefab, 50, 80, star, 80, Color.white, false);
-            GameObject planet2 = createPlanet(planetPrefab, 120, 120, star, 250, Color.white, false);
-            // Instantiate Junk 
-            createJunk(junkPrefab, "Palladium Asteroid", 100f, 0.5f, star, 20, 90);
-            createJunk(junkPrefab, "Sealed Metal Box", 100f, 0.5f, planet2, 10, 90);
-        }
-        else if (level == RIDGE65_ID3) // Ridge 
-        {
-            // Instantiate Star 
-            GameObject star = createStar(starPrefab, 500, Color.red);
-            // Instantiate Planet(s) 
-            // Rocky, Sand, Gas 
-            GameObject planet1 = createPlanet(planetPrefab, 50, 260, star, 120, Color.white, false);
-            GameObject planet2 = createPlanet(planetPrefab, 80, 60, star, 120, Color.white, false);
-            GameObject planet3 = createPlanet(planetPrefab, 120, 130, star, 200, Color.white, false);
-            GameObject planet4 = createPlanet(planetPrefab, 150, 150, star, 250, Color.white, true);
-            // Instantiate Junk 
-            createJunk(junkPrefab, "Small Palladium Asteroid", 100f, 0.5f, planet1, 10, 90);
-            createJunk(junkPrefab, "Spaceship Crash Parts", 100f, 0.5f, planet3, 15, 90);
-        }
-        else if (level == MAGNETIC73_ID4)// Magnetic 
-        {
-            // Instantiate Star 
-            GameObject star = createStar(blackholePrefab, 200, Color.black);
-            // Instantiate Planet(s) 
-            // Ice planets, Gas giant
-            GameObject planet1 = createPlanet(planetPrefab, 50, 80, star, 120, Color.white, false);
-            GameObject planet2 = createPlanet(planetPrefab, 70, 120, star, 100, Color.white, false);
-            GameObject planet3 = createPlanet(planetPrefab, 90, 180, star, 120, Color.white, false);
-            GameObject planet4 = createPlanet(planetPrefab, 120, 230, star, 120, Color.white, false);
-            GameObject planet5 = createPlanet(planetPrefab, 130, 10, star, 200, Color.white, false);
-            createJunk(junkPrefab, "Degenerate Hyperdrive", 100f, 0.5f, star, 10, 90);
-        }
+            else if (level == LUXE10_ID2) // Luxe-10
+            {
+                // Instantiate Star 
+                GameObject star = createStar(starPrefab, 500, Color.red);
+                // Instantiate Planet(s) 
+                // "Dust", Gas Giant
+                GameObject planet1 = createPlanet(planetPrefab, 50, 80, star, 80, Color.white, false);
+                GameObject planet2 = createPlanet(planetPrefab, 120, 120, star, 250, Color.white, false);
+                // Instantiate Junk 
+                if (levelCompletions[level, 1] == "Incomplete")
+                {
+                    createJunk(junkPrefab, "Palladium Asteroid", 100f, 0.5f, star, 20, 90);
+                    createJunk(junkPrefab, "Sealed Metal Box", 100f, 0.5f, planet2, 10, 90);
+                }
+            }
+            else if (level == RIDGE65_ID3) // Ridge 
+            {
+                // Instantiate Star 
+                GameObject star = createStar(starPrefab, 500, Color.red);
+                // Instantiate Planet(s) 
+                // Rocky, Sand, Gas 
+                GameObject planet1 = createPlanet(planetPrefab, 50, 260, star, 120, Color.white, false);
+                GameObject planet2 = createPlanet(planetPrefab, 80, 60, star, 120, Color.white, false);
+                GameObject planet3 = createPlanet(planetPrefab, 120, 130, star, 200, Color.white, false);
+                GameObject planet4 = createPlanet(planetPrefab, 150, 150, star, 250, Color.white, true);
+                // Instantiate Junk 
+                if (levelCompletions[level, 1] == "Incomplete")
+                {
+                    createJunk(junkPrefab, "Small Palladium Asteroid", 100f, 0.5f, planet1, 10, 90);
+                    createJunk(junkPrefab, "Spaceship Crash Parts", 100f, 0.5f, planet3, 15, 90);
+                }
+            }
+            else if (level == MAGNETIC73_ID4) // Magnetic 
+            {
+                // Instantiate Star 
+                GameObject star = createStar(blackholePrefab, 200, Color.black);
+                // Instantiate Planet(s) 
+                // Ice planets, Gas giant
+                GameObject planet1 = createPlanet(planetPrefab, 50, 80, star, 120, Color.white, false);
+                GameObject planet2 = createPlanet(planetPrefab, 70, 120, star, 100, Color.white, false);
+                GameObject planet3 = createPlanet(planetPrefab, 90, 180, star, 120, Color.white, false);
+                GameObject planet4 = createPlanet(planetPrefab, 120, 230, star, 120, Color.white, false);
+                GameObject planet5 = createPlanet(planetPrefab, 130, 10, star, 200, Color.white, false);
+                createJunk(junkPrefab, "Degenerate Hyperdrive", 100f, 0.5f, star, 10, 90);
+            }
 
         titleText.text = levelCompletions[level, 0];
         uncompletedBodies = allBodies; 
@@ -142,9 +163,9 @@ public class LevelLoader : MonoBehaviour
     public void markCompleteAndAddNewLevel()
     {
         // Mark as Complete
-        if (levelCompletions[currentIncompleteLevel, 1] == "Incomplete")
+        if (levelCompletions[currentIncompleteLevel, 1] == "NewComplete")
         {
-            levelCompletions[currentIncompleteLevel, 1] = "Complete";
+            levelCompletions[currentIncompleteLevel, 1] = "OldComplete";
         }
         // Unlock next level
         int nextLevel = currentIncompleteLevel + 1;
@@ -161,6 +182,7 @@ public class LevelLoader : MonoBehaviour
     // Destroys all body gameobjects in a level 
     public void destroyAllBodies()
     {
+        Debug.Log("Destroying all"); 
         foreach (GameObject body in allBodies)
         {
             if (body != null)

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 6b6600a4d6909e4498cbddd3f86a73a9
+guid: 7a161cd848be7f54a86897e5e3629d19
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -7,8 +7,13 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: WallMat
-    second: {fileID: 2100000, guid: 8de779e9d8815b54ab759adeea36fc33, type: 2}
+      name: Material.001
+    second: {fileID: 2100000, guid: 1ed8db27e1e19f343a8e5346351fece6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.002
+    second: {fileID: 2100000, guid: e83ef8084ba65c948882e017aae6158e, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
