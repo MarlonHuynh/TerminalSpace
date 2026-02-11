@@ -31,6 +31,7 @@ public class TerminalCommand : MonoBehaviour
     public int currentSystem = 0;
     public List<string> junkNameList = new List<string>();
     public List<float> junkValueList = new List<float>();
+    public float junkValueTotal = 0; 
     public int itemCount = 0;
     public int maxItemCount = 10;
     public int screenID = 0;
@@ -401,6 +402,8 @@ public class TerminalCommand : MonoBehaviour
         {
             menuBody.text += "Logging successful.\n";
 
+            calcJunkValueTotal(); 
+
             Color clrtrans = logGraphic.color;
             clrtrans.a = 0f;
             logGraphic.color = clrtrans;
@@ -473,5 +476,13 @@ public class TerminalCommand : MonoBehaviour
 
         // Load the level  
         levelLoader.loadLevel(autoNavCount);
+    }
+
+    public float calcJunkValueTotal(){ 
+        float junkValueTotal = 0; 
+        for (int i = 0; i < junkValueList.Count; i++){
+            junkValueTotal += junkValueList[i]; 
+        } 
+        return junkValueTotal; 
     }
 }

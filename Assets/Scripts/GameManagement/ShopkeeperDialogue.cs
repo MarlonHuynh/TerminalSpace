@@ -7,14 +7,18 @@ using UnityEngine.UI;
 public class ShopkeeperDialogue : MonoBehaviour
 {
     [Header("Shopkeeper UI")] 
-    public PlayerMovement playerMovement;   
-    public GameObject shopKeepingCanvas; 
+    public PlayerMovement playerMovement;  
+    public TerminalCommand terminalCommand; 
+    public Shop shop; 
+    public GameObject ShopkeeperCanvas; 
     public TextMeshProUGUI ShopkeeperText; 
     public GameObject lineRenderer; 
     public GameObject headPivot; 
     public UnityEngine.UI.Image ShopkeeperImage;
     public Transform panelTransform; 
     public GameObject ShopkeeperDialogueButtonPrefab; 
+    public GameObject YesBtn; 
+    public GameObject NoBtn;
     [Header("Shopkeeper Audio")]
     public AudioSource talkingSource;
     public AudioClip typeSound;
@@ -46,6 +50,9 @@ public class ShopkeeperDialogue : MonoBehaviour
 
     void Start()
     {
+        YesBtn.SetActive(false);
+        NoBtn.SetActive(false); 
+
         expressionMap = new Dictionary<string, Sprite>()
         {
             { "shp_normal", shp_normal },
@@ -100,9 +107,9 @@ public class ShopkeeperDialogue : MonoBehaviour
         while (nextLoadExist)
         {
             DialogueLine line = currentDialogue.lines[count];
-            if (!shopKeepingCanvas.activeSelf)
+            if (!ShopkeeperCanvas.activeSelf)
             {
-                shopKeepingCanvas.SetActive(true);
+                ShopkeeperCanvas.SetActive(true);
             }
 
             yield return StartCoroutine(TypeText(line.text, line.expressionKey));
@@ -142,7 +149,7 @@ public class ShopkeeperDialogue : MonoBehaviour
         else
         {
             dialogueDone = true;
-            shopKeepingCanvas.SetActive(false); 
+            ShopkeeperCanvas.SetActive(false); 
             playerMovement.movementEnabled = true;
         }
     }
@@ -214,4 +221,38 @@ public class ShopkeeperDialogue : MonoBehaviour
         talkingSource.volume = 0; 
         talkingSource.Stop(); 
     } 
+
+    public void sellItem(){
+        // Display sell text  
+        ShopkeeperText.text = "Sell all items?\nValue: " + terminalCommand.junkValueTotal; 
+        YesBtn.SetActive(true);
+        NoBtn.SetActive(true); 
+    }
+
+    public void pressYesOnSell(){
+        // Clear lists
+        terminalCommand.junkNameList.Clear(); 
+        terminalCommand.junkValueList.Clear(); 
+        // Add to money
+        shop.money += terminalCommand.calcJunkValueTotal();  
+        // Display successful Sell Text 
+        ShopkeeperText.text = "Successfully sold.";  
+        StartCoroutine(enumWaitAndReturn()); 
+
+    }
+
+    public void pressNoOnSell(){
+        // Display unsuccessful Sell Text 
+        ShopkeeperText.text = "You decide not to sell." ; 
+        StartCoroutine(enumWaitAndReturn()); 
+        
+    }
+
+    IEnumerator enumWaitAndReturn(){
+        yield return new WaitForSeconds(2.0f);
+        // Clear text 
+        ShopkeeperText.text = "" ;
+        // Turn off the canvas
+        ShopkeeperCanvas.SetActive(false); 
+    }
 }

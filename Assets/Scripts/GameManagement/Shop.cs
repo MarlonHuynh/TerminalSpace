@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Shop : MonoBehaviour
 {
-    public float money = 50;  
+    public float money = 0;  
     public CameraMovement cameraMovement;  
     [Header("Textures")]
     public Texture smallFuel, bigFuel, hookUpgrade, flowers;  
